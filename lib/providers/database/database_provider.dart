@@ -2,6 +2,27 @@ import 'package:counter/configs/constants.dart';
 import 'package:counter/models/counter_model.dart';
 import 'package:hive/hive.dart';
 
+Future<int> getCounterForMonth(int month, int year) async {
+  var box = await Hive.openBox<CounterModel>(hiveBoxName);
+  final values = box.values.toList();
+
+  var count = 0;
+
+  for (var counter in values) {
+    /// 1. Get the date from the id
+    final date = getDateFromId(counter.id);
+
+    /// 2. If the date month and year match our query, then we
+    /// add the value to the counter
+    if (date.month == month && date.year == year) {
+      /// This is the same as `count = count + counter.count;`
+      count += counter.count;
+    }
+  }
+
+  return count;
+}
+
 /// I want to get a CounterModel for a specific date
 Future<CounterModel> getCounterForDay(DateTime date) async {
   var box = await Hive.openBox<CounterModel>(hiveBoxName);
@@ -69,8 +90,8 @@ String getIdFromDate(DateTime date) {
 /// what date this ID referes to
 ///
 /// ID -> DateTime
-// DateTime getDateFromId(String id) {
-//   final getListOfNumbers = id.split("-").reversed.toList();
-//   return DateTime(int.parse(getListOfNumbers[0]),
-//       int.parse(getListOfNumbers[1]), int.parse(getListOfNumbers[2]));
-// }
+DateTime getDateFromId(String id) {
+  final getListOfNumbers = id.split("-").reversed.toList();
+  return DateTime(int.parse(getListOfNumbers[0]),
+      int.parse(getListOfNumbers[1]), int.parse(getListOfNumbers[2]));
+}

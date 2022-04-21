@@ -22,7 +22,7 @@ class _MyHomePageState extends State<MyHomePage> {
     navigateToHistory(context);
   }
 
-//1.スワイプで右左のページに移動できるようにしたい
+//1.swipe to the "right" page (history)
 //2.左上に今月のトータル冊数
 //3.右上に今日のトータル冊数
 //4.タイトル入力は必須ではない
