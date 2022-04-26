@@ -55,14 +55,6 @@ Future<int> addCounter(DateTime date, String bookTitle) async {
   final CounterModel currentCounter = await getCounterForDay(date);
 
   /// 2. I want to add 1 to that number
-
-  // late final updatedCounter; // This means that the value is going to be created later
-  // if (currentCounter == null) {
-  //   updatedCounter = 0 + 1;
-  // } else {
-  //   updatedCounter = currentCounter + 1;
-  // }´
-
   final updatedCounter = (currentCounter.count) + 1;
   // do the action & keep the type
   final updatedBookList = (currentCounter.bookTitles ?? <String>[])

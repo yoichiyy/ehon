@@ -33,82 +33,111 @@ class _MyHomePageState extends State<MyHomePage> {
 //9.TODOはスライドで次々削除していくことができる。
 //10.
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("絵本"),
+        title: const Text("ehon"),
       ),
-      //やっぱbodyの中だろう。centerの中で、問題ないだろう。
-      body: SizedBox(
-          height: double.infinity,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            // どういうときにchildで、childrenなのか？
-            // <widget>となるときもある。この＜＞は何なのか？
-            // コラムでこのボックスと、フォームをくくると思うんだけど、できるかな。
-            // wrap with columnというコマンドが出てくる、ショートカットは何だっけ option + return
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(50.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      TextFormField(
-                        controller: _controller,
-                        decoration: const InputDecoration(
-                          hintText: "Enter the title",
-                        ),
-                        validator: (String? value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter some text";
-                          }
-                          return null;
-                        },
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              SizedBox(
-                width: 100,
-                height: 100,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    // true?  false??
-                    if (_formKey.currentState?.validate() ?? false) {
-                      _incrementCounter();
-                      _formKey.currentState?.reset();
-                      _showBookDialog("Success!", "You've added a book!");
-                    } else {
-                      _showBookDialog("Warning", "You need to put a book.");
-                    }
-                  },
-                  heroTag: "Increment",
-                  tooltip: "Increment",
-                  child: const Icon(Icons.add),
-                  // materialTapTargetSize: ,
-                ),
-              ),
-            ],
-          )),
-      //どうして、右下に配置される？bodyでなければ、この場所はなんと呼ばれている？
-      floatingActionButton: SizedBox(
-        width: 50,
-        height: 50,
-        child: FloatingActionButton(
-          onPressed: _navigateToHistory,
-          heroTag: "Navigate",
-          tooltip: "Navigate",
-          backgroundColor: Colors.red,
-          child: const Icon(Icons.note),
+      body: Column(
+        children: <Widget>[_countArea(), _buttonArea(), _navButtonArea()],
+      ),
+    );
+  }
+
+  Widget _countArea() {
+    return Container(
+      margin: EdgeInsets.all(10),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.all(4),
+              child: const Text("Total Today"),
+            ),
+          ),
+          const Text("Monthly Total")
+        ],
+      ),
+    );
+  }
+
+  Widget _buttonArea() {
+    return Expanded(
+      child: Container(
+        child: SizedBox(
+          width: 100,
+          height: 100,
+          child: FloatingActionButton(
+            onPressed: () {
+              // if (_formKey.currentState?.validate() ?? false) {
+              _incrementCounter();
+              // _formKey.currentState?.reset();
+              // _showBookDialog("Success!", "You've added a book!");
+              // } else {
+              //   _showBookDialog("Warning", "You need to put a book.");
+              // }
+            },
+            heroTag: "Increment",
+            tooltip: "Increment",
+            child: const Icon(Icons.add),
+          ),
         ),
       ),
     );
   }
+
+  Widget _navButtonArea() {
+    return SizedBox(
+      width: 50,
+      height: 50,
+      child: FloatingActionButton(
+        onPressed: _navigateToHistory,
+        heroTag: "Navigate",
+        tooltip: "Navigate",
+        backgroundColor: Colors.red,
+        child: const Icon(Icons.note),
+      ),
+    );
+  }
+
+  // children: [
+  //   SizedBox(
+  //     child: Column(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: <Widget>[
+  //         Padding(
+  //           padding: const EdgeInsets.all(50.0),
+  //           child: Form(
+  //             key: _formKey,
+  //             child: Column(
+  //               crossAxisAlignment: CrossAxisAlignment.start,
+  //               children: <Widget>[
+  //                 TextFormField(
+  //                   controller: _controller,
+  //                   decoration: const InputDecoration(
+  //                     hintText: "Enter the title",
+  //                   ),
+  //                   validator: (String? value) {
+  //                     if (value == null || value.isEmpty) {
+  //                       return "Please enter some text";
+  //                     }
+  //                     return null;
+  //                   },
+  //                 )
+  //               ],
+  //             ),
+  //           ),
+  //         ),
+  //         ],
+  //       ),
+  //     ),
+  //   ],
+  // ),
+
+  //どうして、右下に配置される？bodyでなければ、この場所はなんと呼ばれている？
+  //   );
+  // }
 
   @override
   void dispose() {
