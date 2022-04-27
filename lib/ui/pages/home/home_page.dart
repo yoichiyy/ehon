@@ -17,20 +17,13 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final _controller = TextEditingController();
+  int _countToday = 0;
   void _incrementCounter() async {
     await addCounter(DateTime.now(), _controller.text);
-  } //ここで、わざわざ別の関数を呼び出すことに意味はあるのか？
-
-//1.swipe to the "right" page (history)
-//2.左上に今月のトータル冊数
-//3.右上に今日のトータル冊数
-//4.タイトル入力は必須ではない
-//5.右下のナビゲーションボタンは削除
-//6.左にやることリストを作る
-//7.左下に小さな登録ボタン。こちらを押した場合はTODOとして追加される。
-//8.テキスト入力欄が左下のボタンの上に移動
-//9.TODOはスライドで次々削除していくことができる。
-//10.
+    setState(() {
+      _countToday++;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +44,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   Expanded(child: _countArea()),
                   Center(
-                          child: _buttonArea(),
-                        ),
+                    child: _buttonArea(),
+                  ),
                 ],
               ),
             ),
@@ -66,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomBar(currentIndex: 0) ,
+      bottomNavigationBar: BottomBar(currentIndex: 0),
     );
   }
 
@@ -111,8 +104,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
- 
 
   // children: [
   //   SizedBox(
