@@ -1,6 +1,7 @@
 import 'package:counter/main.dart';
 import 'package:counter/models/counter_model.dart';
 import 'package:counter/providers/database/database_provider.dart';
+import 'package:counter/ui/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class HistoryPage extends StatelessWidget {
@@ -11,7 +12,9 @@ class HistoryPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(  
         title: Text("History"),
+        automaticallyImplyLeading: false,
       ),
+      bottomNavigationBar: BottomBar(currentIndex: 2) ,
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(

@@ -1,6 +1,9 @@
 import 'package:counter/main.dart';
 import 'package:counter/providers/database/database_provider.dart';
 import 'package:counter/ui/navigation/navigation.dart';
+import 'package:counter/ui/pages/history/history_page.dart';
+import 'package:counter/ui/pages/task_list/task_list_page.dart';
+import 'package:counter/ui/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -17,10 +20,6 @@ class _MyHomePageState extends State<MyHomePage> {
   void _incrementCounter() async {
     await addCounter(DateTime.now(), _controller.text);
   } //ここで、わざわざ別の関数を呼び出すことに意味はあるのか？
-
-  void _navigateToHistory() {
-    navigateToHistory(context);
-  }
 
 //1.swipe to the "right" page (history)
 //2.左上に今月のトータル冊数
@@ -40,8 +39,34 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text("ehon"),
       ),
       body: Column(
-        children: <Widget>[_countArea(), _buttonArea(), _navButtonArea()],
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          //_countArea(), _buttonArea(), _navButtonArea()
+          Expanded(
+            child: HomeCardWidget(
+              title: "Book Count",
+              color: Colors.red.withOpacity(0.2),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Expanded(child: _countArea()),
+                  Center(
+                          child: _buttonArea(),
+                        ),
+                ],
+              ),
+            ),
+          ),
+          Expanded(
+            child: HomeCardWidget(
+              title: "Tasks",
+              color: Colors.amber.withOpacity(0.2),
+              child: TaskCard(),
+            ),
+          ),
+        ],
       ),
+      bottomNavigationBar: BottomBar(currentIndex: 0) ,
     );
   }
 
@@ -87,19 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  Widget _navButtonArea() {
-    return SizedBox(
-      width: 50,
-      height: 50,
-      child: FloatingActionButton(
-        onPressed: _navigateToHistory,
-        heroTag: "Navigate",
-        tooltip: "Navigate",
-        backgroundColor: Colors.red,
-        child: const Icon(Icons.note),
-      ),
-    );
-  }
+ 
 
   // children: [
   //   SizedBox(
@@ -163,6 +176,121 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         );
       },
+    );
+  }
+}
+
+class HomeCardWidget extends StatelessWidget {
+  const HomeCardWidget(
+      {Key? key, required this.color, required this.title, required this.child})
+      : super(key: key);
+
+  final Color color;
+  final String title;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        color: color,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                title.toUpperCase(),
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
+              Expanded(
+                child: Center(child: child),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TaskCard extends StatefulWidget {
+  const TaskCard({Key? key}) : super(key: key);
+
+  @override
+  State<TaskCard> createState() => _TaskCardState();
+}
+
+class _TaskCardState extends State<TaskCard> {
+  final TextEditingController _controller = TextEditingController();
+  DateTime? _pickedDate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Expanded(
+          child: Center(
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    controller: _controller,
+                    decoration: InputDecoration(hintText: "Task to add"),
+                  ),
+                ),
+                ElevatedButton(
+                    onPressed: () async {
+                      _pickedDate = await showDatePicker(
+                        context: context,
+                        currentDate: _pickedDate,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now().subtract(Duration(days: 30)),
+                        lastDate: DateTime.now().add(
+                          Duration(days: 3 * 365),
+                        ),
+                      );
+                      setState(() {});
+                    },
+                    child: Text(_pickedDate == null
+                        ? "Pick a date"
+                        : "${_pickedDate!.month} - ${_pickedDate!.day}"))
+              ],
+            ),
+          ),
+        ),
+        MaterialButton(
+          color: Colors.green,
+          onPressed: () {
+            if (_pickedDate == null || _controller.text.isEmpty) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog(
+                    title: Text("Oops"),
+                    content: Text("You need to add a task and a date"),
+                    actions: [
+                      TextButton(
+                        child: const Text('OK'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+              return;
+            }
+
+            addTask(_pickedDate!, _controller.text);
+          },
+          child: Text("ADD TASK"),
+        ),
+      ],
     );
   }
 }

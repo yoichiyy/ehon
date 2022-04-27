@@ -1,9 +1,10 @@
 import 'package:counter/configs/constants.dart';
 import 'package:counter/models/counter_model.dart';
+import 'package:counter/models/task_model.dart';
 import 'package:hive/hive.dart';
 
 Future<int> getCounterForMonth(int month, int year) async {
-  var box = await Hive.openBox<CounterModel>(hiveBoxName);
+  var box = await Hive.openBox<CounterModel>(hiveCounterBoxName);
   final values = box.values.toList();
 
   var count = 0;
@@ -25,7 +26,7 @@ Future<int> getCounterForMonth(int month, int year) async {
 
 /// I want to get a CounterModel for a specific date
 Future<CounterModel> getCounterForDay(DateTime date) async {
-  var box = await Hive.openBox<CounterModel>(hiveBoxName);
+  var box = await Hive.openBox<CounterModel>(hiveCounterBoxName);
   final values = box.values.toList();
   print(values);
 
@@ -43,7 +44,7 @@ Future<CounterModel> getCounterForDay(DateTime date) async {
 
 /// I want to get ALL counter models
 Future<List<CounterModel>> getAllCounters() async {
-  var box = await Hive.openBox<CounterModel>(hiveBoxName);
+  var box = await Hive.openBox<CounterModel>(hiveCounterBoxName);
   return box.values.toList();
   //final counterModel = CounterModel(id: "16-3-2022", count: 12);
   //return List.filled(200, counterModel);
@@ -51,7 +52,7 @@ Future<List<CounterModel>> getAllCounters() async {
 
 ///　I want to create a a function that will update the value of counter by1
 Future<int> addCounter(DateTime date, String bookTitle) async {
-  var box = await Hive.openBox<CounterModel>(hiveBoxName);
+  var box = await Hive.openBox<CounterModel>(hiveCounterBoxName);
   final CounterModel currentCounter = await getCounterForDay(date);
 
   /// 2. I want to add 1 to that number
@@ -86,4 +87,24 @@ DateTime getDateFromId(String id) {
   final getListOfNumbers = id.split("-").reversed.toList();
   return DateTime(int.parse(getListOfNumbers[0]),
       int.parse(getListOfNumbers[1]), int.parse(getListOfNumbers[2]));
+}
+
+/// Tasks
+///
+///　I want to create a a function that will update the value of counter by1
+Future<TaskModel> addTask(DateTime date, String task) async {
+  var box = await Hive.openBox<TaskModel>(hiveTaskBoxName);
+
+  /// 3. I want to update the database with this new number
+  final taskModel = TaskModel(
+      id: DateTime.now().millisecondsSinceEpoch.toString(),
+      title: task,
+      date: date);
+  box.add(taskModel);
+  return taskModel;
+}
+
+Future<List<TaskModel>> getAllTasks() async {
+  var box = await Hive.openBox<TaskModel>(hiveTaskBoxName);
+  return box.values.toList();
 }

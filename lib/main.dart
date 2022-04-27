@@ -1,5 +1,6 @@
 import 'package:counter/configs/constants.dart';
 import 'package:counter/models/counter_model.dart';
+import 'package:counter/models/task_model.dart';
 import 'package:counter/providers/database/database_provider.dart';
 import 'package:counter/ui/app.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +16,8 @@ void main() async {
 
   Hive
     ..init(directory.path)
-    ..registerAdapter(CounterModelAdapter()); //コピーof Example
+    ..registerAdapter(CounterModelAdapter())
+    ..registerAdapter(TaskModelAdapter()); //コピーof Example
 
   // final count = await addCounter(DateTime.now());//?? await。。何を通信している？
   // debugPrint("The current count is $count");
