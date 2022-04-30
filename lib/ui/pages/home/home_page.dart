@@ -175,6 +175,7 @@ class _MyHomePageState extends State<MyHomePage> {
   // ),
 
   // git hub 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
+  //成功したっぽい
   //どうして、右下に配置される？bodyでなければ、この場所はなんと呼ばれている？
   //   );
   // }
