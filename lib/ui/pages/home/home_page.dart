@@ -174,6 +174,7 @@ class _MyHomePageState extends State<MyHomePage> {
   //   ],
   // ),
 
+  // git hub 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
   //どうして、右下に配置される？bodyでなければ、この場所はなんと呼ばれている？
   //   );
   // }
@@ -250,7 +251,7 @@ class TaskCard extends StatefulWidget {
 
 class _TaskCardState extends State<TaskCard> {
   final TextEditingController _controller = TextEditingController();
-  DateTime? _pickedDate = DateTime.now();
+  DateTime _pickedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -270,7 +271,7 @@ class _TaskCardState extends State<TaskCard> {
                 ),
                 ElevatedButton(
                     onPressed: () async {
-                      _pickedDate = await showDatePicker(
+                      final _result = await showDatePicker(
                         context: context,
                         currentDate: _pickedDate,
                         initialDate: DateTime.now(),
@@ -279,11 +280,15 @@ class _TaskCardState extends State<TaskCard> {
                           Duration(days: 3 * 365),
                         ),
                       );
+                      if (_result != null) {
+                        _pickedDate = _result;
+                      }
+
                       setState(() {});
                     },
                     child: Text(_pickedDate == null
                         ? "期日"
-                        : "${_pickedDate!.month} - ${_pickedDate!.day}"))
+                        : "${_pickedDate.month} - ${_pickedDate.day}"))
               ],
             ),
           ),
