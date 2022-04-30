@@ -6,6 +6,8 @@ import 'package:counter/ui/pages/task_list/task_list_page.dart';
 import 'package:counter/ui/widgets/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../../../models/counter_model.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
@@ -17,6 +19,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   final _controller = TextEditingController();
+
   int _countToday = 0;
   void _incrementCounter() async {
     await addCounter(DateTime.now(), _controller.text);
@@ -34,7 +37,6 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          //_countArea(), _buttonArea(), _navButtonArea()
           Expanded(
             child: HomeCardWidget(
               title: "Book Count",
@@ -71,10 +73,43 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: Container(
               margin: const EdgeInsets.all(4),
-              child: const Text("Total Today"),
+              child: FutureBuilder<CounterModel>(
+                  future: getCounterForDay(DateTime.now()),
+                  builder: (context, snapshot) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        "Today: ${snapshot.data?.count}",
+                        // "Today: ${snapshot.data?.bookTitles?.join(", ") ?? "No book data"}",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 22),
+                      ),
+                    );
+                  }),
+              // const Text("Total Today"),
             ),
           ),
-          const Text("Monthly Total")
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.all(4),
+              child: FutureBuilder<int>(
+                  // future: getCounterForDay(DateTime.now()),
+                  future: getCounterForMonth(
+                      DateTime.now().month, DateTime.now().year),
+                  builder: (context, snapshot) {
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 8.0),
+                      child: Text(
+                        "Today: ${snapshot.data}",
+                        // "Today: ${snapshot.data?.bookTitles?.join(", ") ?? "No book data"}",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 22),
+                      ),
+                    );
+                  }),
+              // const Text("Total Today"),
+            ),
+          ),
         ],
       ),
     );
@@ -215,7 +250,7 @@ class TaskCard extends StatefulWidget {
 
 class _TaskCardState extends State<TaskCard> {
   final TextEditingController _controller = TextEditingController();
-  DateTime? _pickedDate;
+  DateTime? _pickedDate = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -230,7 +265,7 @@ class _TaskCardState extends State<TaskCard> {
                 Expanded(
                   child: TextFormField(
                     controller: _controller,
-                    decoration: InputDecoration(hintText: "Task to add"),
+                    decoration: const InputDecoration(hintText: "やること"),
                   ),
                 ),
                 ElevatedButton(
@@ -239,7 +274,7 @@ class _TaskCardState extends State<TaskCard> {
                         context: context,
                         currentDate: _pickedDate,
                         initialDate: DateTime.now(),
-                        firstDate: DateTime.now().subtract(Duration(days: 30)),
+                        firstDate: DateTime.now().subtract(Duration(days: 0)),
                         lastDate: DateTime.now().add(
                           Duration(days: 3 * 365),
                         ),
@@ -247,7 +282,7 @@ class _TaskCardState extends State<TaskCard> {
                       setState(() {});
                     },
                     child: Text(_pickedDate == null
-                        ? "Pick a date"
+                        ? "期日"
                         : "${_pickedDate!.month} - ${_pickedDate!.day}"))
               ],
             ),
@@ -262,7 +297,7 @@ class _TaskCardState extends State<TaskCard> {
                 builder: (context) {
                   return AlertDialog(
                     title: Text("Oops"),
-                    content: Text("You need to add a task and a date"),
+                    content: Text("You need to add a task"),
                     actions: [
                       TextButton(
                         child: const Text('OK'),
