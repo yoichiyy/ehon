@@ -31,20 +31,20 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("ehon"),
-      ),
+      // appBar: AppBar(
+      //   title: const Text("ehon"),
+      // ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Expanded(
+          Flexible(
             child: HomeCardWidget(
-              title: "Book Count",
+              title: "えほん",
               color: Colors.red.withOpacity(0.2),
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Expanded(child: _countArea()),
+                  _countArea(),
                   Center(
                     child: _buttonArea(),
                   ),
@@ -54,20 +54,20 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           Expanded(
             child: HomeCardWidget(
-              title: "Tasks",
+              title: "TODO",
               color: Colors.amber.withOpacity(0.2),
-              child: TaskCard(),
+              child: const TaskCard(),
             ),
           ),
         ],
       ),
-      bottomNavigationBar: BottomBar(currentIndex: 0),
+      bottomNavigationBar: const BottomBar(currentIndex: 0),
     );
   }
 
   Widget _countArea() {
     return Container(
-      margin: EdgeInsets.all(10),
+      margin: const EdgeInsets.all(10),
       child: Row(
         children: [
           Expanded(
@@ -79,10 +79,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     return Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
-                        "Today: ${snapshot.data?.count}",
+                        "今日: ${snapshot.data?.count}",
                         // "Today: ${snapshot.data?.bookTitles?.join(", ") ?? "No book data"}",
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 22),
+                        style: const TextStyle(fontSize: 22),
                       ),
                     );
                   }),
@@ -100,10 +100,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     return Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
-                        "Today: ${snapshot.data}",
+                        "今月: ${snapshot.data}",
                         // "Today: ${snapshot.data?.bookTitles?.join(", ") ?? "No book data"}",
                         textAlign: TextAlign.center,
-                        style: TextStyle(fontSize: 22),
+                        style: const TextStyle(fontSize: 22),
                       ),
                     );
                   }),
@@ -119,8 +119,8 @@ class _MyHomePageState extends State<MyHomePage> {
     return Expanded(
       child: Container(
         child: SizedBox(
-          width: 100,
-          height: 100,
+          width: 70,
+          height: 70,
           child: FloatingActionButton(
             onPressed: () {
               // if (_formKey.currentState?.validate() ?? false) {
@@ -174,12 +174,6 @@ class _MyHomePageState extends State<MyHomePage> {
   //   ],
   // ),
 
-  // git hub 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
-  //成功したっぽい
-  //どうして、右下に配置される？bodyでなければ、この場所はなんと呼ばれている？
-  //   );
-  // }
-
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
@@ -232,7 +226,7 @@ class HomeCardWidget extends StatelessWidget {
                 title.toUpperCase(),
                 style: Theme.of(context).textTheme.titleLarge,
               ),
-              Expanded(
+              Flexible(
                 child: Center(child: child),
               ),
             ],
@@ -262,34 +256,87 @@ class _TaskCardState extends State<TaskCard> {
       children: [
         Expanded(
           child: Center(
-            child: Row(
+            child: Column(
               children: [
-                Expanded(
-                  child: TextFormField(
-                    controller: _controller,
-                    decoration: const InputDecoration(hintText: "やること"),
-                  ),
-                ),
-                ElevatedButton(
-                    onPressed: () async {
-                      final _result = await showDatePicker(
-                        context: context,
-                        currentDate: _pickedDate,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime.now().subtract(Duration(days: 0)),
-                        lastDate: DateTime.now().add(
-                          Duration(days: 3 * 365),
-                        ),
-                      );
-                      if (_result != null) {
-                        _pickedDate = _result;
-                      }
+                Row(
+                  children: [
+                    Expanded(
+                      child: TextFormField(
+                        controller: _controller,
+                        decoration: const InputDecoration(hintText: "やること"),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () async {
+                        final _result = await showDatePicker(
+                          context: context,
+                          currentDate: _pickedDate,
+                          initialDate: DateTime.now(),
+                          firstDate:
+                              DateTime.now().subtract(const Duration(days: 0)),
+                          lastDate: DateTime.now().add(
+                            const Duration(days: 3 * 365),
+                          ),
+                        );
+                        if (_result != null) {
+                          _pickedDate = _result;
+                        }
 
-                      setState(() {});
-                    },
-                    child: Text(_pickedDate == null
-                        ? "期日"
-                        : "${_pickedDate.month} - ${_pickedDate.day}"))
+                        setState(() {});
+                      },
+                      child: Text("${_pickedDate.month} - ${_pickedDate.day}"),
+                    ),
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text("明日"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text("来週"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text("来月〜"),
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text("朝"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text("昼"),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      child: const Text("夜"),
+                    )
+                  ],
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      //2
+                      onPressed: () {},
+                      child: const Text("ON"),
+                    ),
+                    ElevatedButton(
+                      //2
+                      onPressed: () {},
+                      child: const Text("OFF"),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -297,13 +344,13 @@ class _TaskCardState extends State<TaskCard> {
         MaterialButton(
           color: Colors.green,
           onPressed: () {
-            if (_pickedDate == null || _controller.text.isEmpty) {
+            if (_controller.text.isEmpty) {
               showDialog(
                 context: context,
                 builder: (context) {
                   return AlertDialog(
-                    title: Text("Oops"),
-                    content: Text("You need to add a task"),
+                    title: const Text("Oops"),
+                    content: const Text("You need to add a task"),
                     actions: [
                       TextButton(
                         child: const Text('OK'),
@@ -320,7 +367,7 @@ class _TaskCardState extends State<TaskCard> {
 
             addTask(_pickedDate!, _controller.text);
           },
-          child: Text("ADD TASK"),
+          child: const Text("ADD TASK"),
         ),
       ],
     );
