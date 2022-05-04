@@ -53,6 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Expanded(
+            flex: 2,
             child: HomeCardWidget(
               title: "TODO",
               color: Colors.amber.withOpacity(0.2),
@@ -123,13 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
           height: 70,
           child: FloatingActionButton(
             onPressed: () {
-              // if (_formKey.currentState?.validate() ?? false) {
               _incrementCounter();
-              // _formKey.currentState?.reset();
-              // _showBookDialog("Success!", "You've added a book!");
-              // } else {
-              //   _showBookDialog("Warning", "You need to put a book.");
-              // }
             },
             heroTag: "Increment",
             tooltip: "Increment",
@@ -139,40 +134,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
-  // children: [
-  //   SizedBox(
-  //     child: Column(
-  //       mainAxisAlignment: MainAxisAlignment.center,
-  //       children: <Widget>[
-  //         Padding(
-  //           padding: const EdgeInsets.all(50.0),
-  //           child: Form(
-  //             key: _formKey,
-  //             child: Column(
-  //               crossAxisAlignment: CrossAxisAlignment.start,
-  //               children: <Widget>[
-  //                 TextFormField(
-  //                   controller: _controller,
-  //                   decoration: const InputDecoration(
-  //                     hintText: "Enter the title",
-  //                   ),
-  //                   validator: (String? value) {
-  //                     if (value == null || value.isEmpty) {
-  //                       return "Please enter some text";
-  //                     }
-  //                     return null;
-  //                   },
-  //                 )
-  //               ],
-  //             ),
-  //           ),
-  //         ),
-  //         ],
-  //       ),
-  //     ),
-  //   ],
-  // ),
 
   @override
   void dispose() {
@@ -284,7 +245,7 @@ class _TaskCardState extends State<TaskCard> {
 
                         setState(() {});
                       },
-                      child: Text("${_pickedDate.month} - ${_pickedDate.day}"),
+                      child: Text("日付指定"),
                     ),
                   ],
                 ),

@@ -12,7 +12,7 @@ class BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: currentIndex,
-      items: [
+      items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: "Home",
@@ -28,18 +28,18 @@ class BottomBar extends StatelessWidget {
       ],
       onTap: (index) {
         if (index == 0) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => MyHomePage()));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const MyHomePage()));
         }
 
         if (index == 1) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => TaskListPage()));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const TaskListPage()));
         }
 
         if (index == 2) {
-          Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => HistoryPage()));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const HistoryPage()));
         }
       },
     );
