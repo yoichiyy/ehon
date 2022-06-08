@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "192930116825",
+    "project_id": "ehon-e59cf",
+    "storage_bucket": "ehon-e59cf.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:192930116825:android:ee826e39454fbca72fbac8",
+        "android_client_info": {
+          "package_name": "jp.yoichiro.ehon"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "192930116825-gcakmsjvh2dpaa3vn5har3oe29fphpn7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtfsYlfIuD6TPotvhQ52-7QXLa-pHLyGM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "192930116825-gcakmsjvh2dpaa3vn5har3oe29fphpn7.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "192930116825-du2nk03o90kgavkh3barradus6kfseaa.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "jp.yoichiro.ehon"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
