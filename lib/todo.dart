@@ -1,19 +1,18 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Todo {
-  String title = ""; //クラスが所持している変数
-  DateTime? createdAt;
+  String taskName = ""; //クラスが所持している変数
+  DateTime? dueDate;
+  DateTime? dueTime;
 
+  //コンストラクタ
   Todo(DocumentSnapshot doc) {
-    title = (doc.data() as Map<String, dynamic>)["title"];
-    createdAt = (doc.data() as Map<String, dynamic>)["createdAt"];    
+    taskName = (doc.data() as Map<String, dynamic>)["title"];
+
+    final Timestamp timestamp =
+        (doc.data() as Map<String, dynamic>)['createdAt'];
+    dueDate = timestamp.toDate();
+    dueTime = timestamp.toDate();
+    
   }
-
-  //これを使うと、TODOに２つの引数を必ず入れなくてはなくなる。
-  // Todo(this.title, this.createdAt);//
-
-  // factory Todo.fromFirestore(DocumentSnapshot doc){//TODOのインスタンスを作る
-  //   return Todo((doc.data() as Map<String, dynamic>)["title"], (doc.data() as Map<String, dynamic>)["createdAt"]);
-  //   }//関数に名前をつけられる
-
 }

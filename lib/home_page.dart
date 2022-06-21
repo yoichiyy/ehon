@@ -1,12 +1,11 @@
 import 'package:counter/main.dart';
-import 'package:counter/providers/database/database_provider.dart';
-import 'package:counter/ui/navigation/navigation.dart';
-import 'package:counter/ui/pages/history/history_page.dart';
-import 'package:counter/ui/pages/task_list/task_list_page.dart';
-import 'package:counter/ui/widgets/bottom_navigation_bar.dart';
+import 'package:counter/models/database_provider.dart';
+import 'package:counter/navigation.dart';
+import 'package:counter/history_page.dart';
+import 'package:counter/%E3%83%BB%E3%83%BB%E3%83%BBtask_list_page.dart';
+import 'package:counter/ui/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-
-import '../../../models/counter_model.dart';
+import 'models/counter_model.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -326,7 +325,7 @@ class _TaskCardState extends State<TaskCard> {
               return;
             }
 
-            addTask(_pickedDate!, _controller.text);
+            addTask(_pickedDate, _controller.text);
           },
           child: const Text("ADD TASK"),
         ),

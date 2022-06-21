@@ -1,6 +1,6 @@
-import 'package:counter/ui/pages/history/history_page.dart';
-import 'package:counter/ui/pages/home/home_page.dart';
-import 'package:counter/ui/pages/task_list/task_list_page.dart';
+import 'package:counter/history_page.dart';
+import 'package:counter/home_page.dart';
+import 'package:counter/%E3%83%BB%E3%83%BB%E3%83%BBtask_list_page.dart';
 import 'package:flutter/material.dart';
 
 class BottomBar extends StatelessWidget {

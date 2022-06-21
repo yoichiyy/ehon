@@ -1,8 +1,8 @@
 import 'package:counter/main.dart';
 import 'package:counter/models/counter_model.dart';
 import 'package:counter/models/task_model.dart';
-import 'package:counter/providers/database/database_provider.dart';
-import 'package:counter/ui/widgets/bottom_navigation_bar.dart';
+import 'package:counter/models/database_provider.dart';
+import 'package:counter/ui/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
 class TaskListPage extends StatelessWidget {
@@ -128,29 +128,4 @@ class Animal {
   final String name;
 
   Animal(this.name);
-}
-
-/// Inheritnce - we are going to EXTEND a class, and get properties from that class.
-/// We call the class we EXTEND, the PARENT, and the other could be called "child"
-///
-/// In order to do this in Dart, we need to use the  `extends`keyword when we are
-/// creating a class. You can see this clearly when we use a Stateless or Stateful Widget
-///
-/// In the above example, we have an `Animal` class that only has a name
-///
-/// Our objective now is to create a Person class that will ALSO have a name, but also
-/// other properties, such as profession
-///
-/// But this poses a problem - can Animal and Person have a name?
-///
-/// Yes! We say that we call the "SUPER" constructor, which means that we are saying
-///
-/// Hey, create a Person, that is in fact an Animal, with this ANIMAL NAME
-///
-/// So the SUPER, passes the properties to the parent
-
-class Person extends Animal {
-  final String profession;
-
-  Person(this.profession, String name) : super(name);
 }
