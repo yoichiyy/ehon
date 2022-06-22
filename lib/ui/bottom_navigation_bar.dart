@@ -3,6 +3,8 @@ import 'package:counter/home_page.dart';
 import 'package:counter/%E3%83%BB%E3%83%BB%E3%83%BBtask_list_page.dart';
 import 'package:flutter/material.dart';
 
+import '../funiv_task_list.dart';
+
 class BottomBar extends StatelessWidget {
   const BottomBar({Key? key, required this.currentIndex}) : super(key: key);
 
