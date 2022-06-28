@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:counter/main.dart';
 import 'package:counter/models/database_provider.dart';
 import 'package:counter/navigation.dart';
@@ -252,15 +253,28 @@ class _TaskCardState extends State<TaskCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() =>
+                            _pickedDate = DateTime(
+                              DateTime.now().year,
+                              DateTime.now().month,
+                              DateTime.now().day + 1));
+                        debugPrint(_pickedDate.toString());
+                      },
                       child: const Text("明日"),
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() =>
+                            _pickedDate = DateTime(DateTime.now().day + 7));
+                      },
                       child: const Text("来週"),
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() =>
+                            _pickedDate = DateTime(DateTime.now().month + 1));
+                      },
                       child: const Text("来月〜"),
                     )
                   ],
@@ -269,7 +283,15 @@ class _TaskCardState extends State<TaskCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        //上の【明日】ボタンはあっているのか？　これをdebugで調べる方法を知りたい。
+                        //debugPrintをやってみた→多分うまく表示されている。でも、0026-01-01？？
+
+
+                        //朝を押したら「時刻」を７にしたい！どうすればよいのか？ → datetime.nowの時刻を指定する方法
+                        //上のボタンはあっているのだろうか？
+                        // setState(() => _pickedDate = DateTime(DateTime.now().hour = 7));
+                      },
                       child: const Text("朝"),
                     ),
                     ElevatedButton(
@@ -303,7 +325,7 @@ class _TaskCardState extends State<TaskCard> {
         ),
         MaterialButton(
           color: Colors.green,
-          onPressed: () {
+          onPressed: () async{
             if (_controller.text.isEmpty) {
               showDialog(
                 context: context,
@@ -325,7 +347,18 @@ class _TaskCardState extends State<TaskCard> {
               return;
             }
 
-            addTask(_pickedDate, _controller.text);
+            //関数名の代わりに、直接書いてみる。returnの部分はどうしたら良いのだろう。
+            // addTask(_pickedDate, _controller.text);
+
+       await FirebaseFirestore.instance
+          .collection('posts') // コレクションID指定
+          .doc() // ドキュメントID自動生成
+          .set({
+        'text': _controller.value.text, //stringを送る
+        'date': _pickedDate //本当はタイムスタンプ　「サーバー　タイムスタンプ」検索
+      });
+
+            
           },
           child: const Text("ADD TASK"),
         ),

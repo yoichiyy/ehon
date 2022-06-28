@@ -68,10 +68,13 @@ DateTime getDateFromId(String id) {
       int.parse(getListOfNumbers[1]), int.parse(getListOfNumbers[2]));
 }
 
+//hiveを用いた、addTask関数
 Future<TaskModel> addTask(DateTime date, String task) async {
 
+
+
+
   var box = await Hive.openBox<TaskModel>(hiveTaskBoxName);
-  /// 3. I want to update the database with this new number
   final taskModel = TaskModel(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       title: task,

@@ -11,10 +11,14 @@ class MainModel extends ChangeNotifier {
         FirebaseFirestore.instance.collection('todoList').snapshots();
     snapshots.listen((snapshot) {
       final docs = snapshot.docs;
+
       final todoList = docs.map((doc) => Todo(doc)).toList();
       //null check のエラーで、ビックリマークつけて解決したが、まだ理解はしていない
       todoList.sort((a, b) => b.dueDate!.compareTo(a.dueDate!));
-      this.todoList = todoList;
+      
+      //ここで、this.と出てくる理由？　何をしている？　これはコンストラクタ？
+      this.todoList = todoList; //ここを日本語訳するとしたら、どうなる？
+
       notifyListeners();
     });
   } 
