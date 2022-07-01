@@ -37,25 +37,36 @@ class _TaskListPageState extends State<TaskListPage> {
                     itemCount: todoList.length,
                     itemBuilder: (BuildContext context, int index) {
                       return Dismissible(
-                          background: Container(
-                            color: Colors.green,
-                          ),
-                          key: ValueKey<int>(items[index]),
-                          onDismissed: (DismissDirection direction) {
-                            setState(() {
-                              items.removeAt(
-                                  index); //同じ。itemsとindexにあたる部分をどう書けばよいのだろう。
-                            });
-                          },
-                          child: ListView(
-                            children: todoList
-                                .map(
-                                  (e) => ListTile(
-                                    title: Text(e.taskName),
-                                  ),
-                                )
-                                .toList(),
-                          ));
+                        background: Container(
+                          color: Colors.green,
+                        ),
+                        key: ValueKey<int>(items[index]),
+                        onDismissed: (DismissDirection direction) {
+                          setState(() {
+                            items.removeAt(
+                                index); //同じ。itemsとindexにあたる部分をどう書けばよいのだろう。
+                          });
+                        },
+
+                        //ListView.builderには、childが必要　→　childrenではどうしてだめなのか？
+                        //children: todoList.map((e) => ListTile(title:Text(e.taskNmae))).toList
+
+                        //　　多分これは、もはやListView.builderと根本的に構造が異なる。。。
+                        // 　どうやって map(e) e.taskNameのような
+                        //・・・firebaseのデータをListview.builderで展開すればいいのか？
+                        child: ListTile(
+                          title: Text("あいてむ ${items[index]}"),
+                        ),
+
+                        // child: ListView(
+                        //   children: todoList.map(
+                        //         (e) => ListTile(
+                        //           title: Text(e.taskName),
+                        //         ),
+                        //       )
+                        //       .toList(),
+                        // ),
+                      );
                     });
               },
             )),
