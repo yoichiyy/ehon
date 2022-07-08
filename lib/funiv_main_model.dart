@@ -2,9 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import '/todo.dart';
 
-
 class MainModel extends ChangeNotifier {
-  List<Todo> todoList = [];
+  List<Todo> todos = [];
 
   void getTodoListRealtime() {
     final snapshots =
@@ -15,16 +14,14 @@ class MainModel extends ChangeNotifier {
       final todoList = docs.map((doc) => Todo(doc)).toList();
       //null check のエラーで、ビックリマークつけて解決したが、まだ理解はしていない
       todoList.sort((a, b) => b.dueDate!.compareTo(a.dueDate!));
-      
+
       //ここで、this.と出てくる理由？　何をしている？　これはコンストラクタ？
-      this.todoList = todoList; //ここを日本語訳するとしたら、どうなる？
+      this.todos = todoList; //ここを日本語訳するとしたら、どうなる？
 
       notifyListeners();
     });
-  } 
+  }
 }
-
-
 
 class AddBookModel extends ChangeNotifier {
   String? taskName;

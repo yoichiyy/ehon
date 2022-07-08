@@ -27,47 +27,69 @@ class _TaskListPageState extends State<TaskListPage> {
             appBar: AppBar(
               title: Text('FUNIV TODOアプリ'),
             ),
-
-            //todo: builder内の　３つの引数は、どこから情報を受け取っている？
             body: Consumer<MainModel>(
               builder: (context, model, child) {
-                final todoList = model.todoList;
-                List<int> items = List<int>.generate(20, (int index) => index);
-                return ListView.builder(
-                    itemCount: todoList.length,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Dismissible(
-                        background: Container(
-                          color: Colors.green,
-                        ),
-                        key: ValueKey<int>(items[index]),
-                        onDismissed: (DismissDirection direction) {
-                          setState(() {
-                            items.removeAt(
-                                index); //同じ。itemsとindexにあたる部分をどう書けばよいのだろう。
-                          });
-                        },
+                final todoList = model.todos;
 
-                        //ListView.builderには、childが必要　→　childrenではどうしてだめなのか？
-                        //children: todoList.map((e) => ListTile(title:Text(e.taskNmae))).toList
+            return ListView(
+              children: todoList
+                          .map((todoLlist) => ListTile(title:Text(todoList.taskname),),).toList(),
+                            // Dismissible(
+                            //   background: Container(
+                            //     color: Colors.green,
+                            //   ),
+                            //   key: ValueKey(todoList[index]),
+                            //   onDismissed: (DismissDirection direction) {
+                            //     setState(
+                            //       () {
+                            //         todoList.removeAt(
+                            //             index); //同じ。itemsとindexにあたる部分をどう書けばよいのだろう。
+                            //       },
+                            //     );
+                            //   },
+                            //   child:
+                          //     ListTile(
+                          //       title: Text(e.taskName),
+                          //     ),
+                          //   ),
+                          // )
+                          // .toList(),
+                    );
+              
+              
+              
 
-                        //　　多分これは、もはやListView.builderと根本的に構造が異なる。。。
-                        // 　どうやって map(e) e.taskNameのような
-                        //・・・firebaseのデータをListview.builderで展開すればいいのか？
-                        child: ListTile(
-                          title: Text("あいてむ ${items[index]}"),
-                        ),
 
-                        // child: ListView(
-                        //   children: todoList.map(
-                        //         (e) => ListTile(
-                        //           title: Text(e.taskName),
-                        //         ),
-                        //       )
-                        //       .toList(),
-                        // ),
-                      );
-                    });
+    //いったんコメントアウト。うまく言ってる？無限ループのリスト
+                // return ListView.builder(
+                //   //都度描画する・・・ここしっかり理解。名前暗記。
+                //   itemCount: todoList.length,
+                //   itemBuilder: (BuildContext context, int index) {
+                //     return ListView(
+                //       children: todoList
+                //           .map(
+                //             (e) => Dismissible(
+                //               background: Container(
+                //                 color: Colors.green,
+                //               ),
+                //               key: ValueKey(todoList[index]),
+                //               onDismissed: (DismissDirection direction) {
+                //                 setState(
+                //                   () {
+                //                     todoList.removeAt(
+                //                         index); //同じ。itemsとindexにあたる部分をどう書けばよいのだろう。
+                //                   },
+                //                 );
+                //               },
+                //               child: ListTile(
+                //                 title: Text(e.taskName),
+                //               ),
+                //             ),
+                //           )
+                //           .toList(),
+                //     );
+                //   },
+                // );
               },
             )),
       ),
