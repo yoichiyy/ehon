@@ -31,66 +31,48 @@ class _TaskListPageState extends State<TaskListPage> {
               builder: (context, model, child) {
                 final todoList = model.todos;
 
-            return ListView(
-              children: todoList
-                          .map((todoLlist) => ListTile(title:Text(todoList.taskname),),).toList(),
-                            // Dismissible(
-                            //   background: Container(
-                            //     color: Colors.green,
-                            //   ),
-                            //   key: ValueKey(todoList[index]),
-                            //   onDismissed: (DismissDirection direction) {
-                            //     setState(
-                            //       () {
-                            //         todoList.removeAt(
-                            //             index); //同じ。itemsとindexにあたる部分をどう書けばよいのだろう。
-                            //       },
-                            //     );
-                            //   },
-                            //   child:
-                          //     ListTile(
-                          //       title: Text(e.taskName),
-                          //     ),
-                          //   ),
-                          // )
-                          // .toList(),
+                //todoList.map(e...)とやれば、e.taskNameとできるのに、　直接todoList.tasknameとできない。
+
+//ListView.builder：todoList.taskNameと、読み込むことができない    
+                return ListView.builder(
+                  itemCount: todoList.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return Dismissible(
+                      key: ValueKey(todoList[index]), 
+                      child: ListTile(
+                        title: Text( 'Item ${todoList[index].taskName}'),//index]だと何故、itemInstanceとなってしまう？indexだから番号0,1,2...じゃないのか？
+                      ),
+                      background: Container(color: Colors.red),
+                      onDismissed: (direction) {
+                        setState(() {
+                          // todoList.removeAt(todoList[index]);//intを入手する方法？
+                        });
+                      },
                     );
-              
-              
-              
+                  },
+                );
 
 
-    //いったんコメントアウト。うまく言ってる？無限ループのリスト
-                // return ListView.builder(
-                //   //都度描画する・・・ここしっかり理解。名前暗記。
-                //   itemCount: todoList.length,
-                //   itemBuilder: (BuildContext context, int index) {
-                //     return ListView(
-                //       children: todoList
-                //           .map(
-                //             (e) => Dismissible(
-                //               background: Container(
-                //                 color: Colors.green,
-                //               ),
-                //               key: ValueKey(todoList[index]),
-                //               onDismissed: (DismissDirection direction) {
-                //                 setState(
-                //                   () {
-                //                     todoList.removeAt(
-                //                         index); //同じ。itemsとindexにあたる部分をどう書けばよいのだろう。
-                //                   },
-                //                 );
-                //               },
-                //               child: ListTile(
-                //                 title: Text(e.taskName),
-                //               ),
-                //             ),
-                //           )
-                //           .toList(),
-                //     );
-                //   },
-                // );
+// //ListView：setStateで、indexつけることができずに困ってる。
+//               return ListView(
+//                 children: todoList.map((e) { //enumalated? → hukuzatsu google
+//                   return Dismissible(
+//                     key: ValueKey(e.taskName), //あっているのか？？？
+//                     child: ListTile(
+//                       title: Text(e.taskName),
+//                     ),
+//                     background: Container(color: Colors.red),
+//                     onDismissed: (direction) {
+//                       setState(() {
+//                         // todoList.removeAt(e.taskName);
+//                       });
+//                     },
+//                   );
+//                 }).toList(),
+//               );
               },
+
+              // => Text(todoList.taskName)).toList(),
             )),
       ),
     );
