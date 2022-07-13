@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'funiv_main_model.dart';
 import 'package:provider/provider.dart';
@@ -31,9 +32,6 @@ class _TaskListPageState extends State<TaskListPage> {
               builder: (context, model, child) {
                 final todoList = model.todos;
 
-                //todoList.map(e...)とやれば、e.taskNameとできるのに、　直接todoList.tasknameとできない。
-
-//ListView.builder：todoList.taskNameと、読み込むことができない    
                 return ListView.builder(
                   itemCount: todoList.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -45,34 +43,14 @@ class _TaskListPageState extends State<TaskListPage> {
                       background: Container(color: Colors.red),
                       onDismissed: (direction) {
                         setState(() {
-                          // todoList.removeAt(todoList[index]);//intを入手する方法？
-                        });
+                          //removeAtと、Firebaseのdelete両方をやる必要あるのかな？後者だけで良い感じも。→試してみる。
+                          todoList.removeAt(index);//intを入手する方法？
+                          FirebaseFirestore.instance.collection('todoList').doc().delete();                        });
                       },
                     );
                   },
                 );
-
-
-// //ListView：setStateで、indexつけることができずに困ってる。
-//               return ListView(
-//                 children: todoList.map((e) { //enumalated? → hukuzatsu google
-//                   return Dismissible(
-//                     key: ValueKey(e.taskName), //あっているのか？？？
-//                     child: ListTile(
-//                       title: Text(e.taskName),
-//                     ),
-//                     background: Container(color: Colors.red),
-//                     onDismissed: (direction) {
-//                       setState(() {
-//                         // todoList.removeAt(e.taskName);
-//                       });
-//                     },
-//                   );
-//                 }).toList(),
-//               );
               },
-
-              // => Text(todoList.taskName)).toList(),
             )),
       ),
     );
