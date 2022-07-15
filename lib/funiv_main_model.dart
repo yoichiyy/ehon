@@ -8,9 +8,10 @@ class MainModel extends ChangeNotifier {
   void getTodoListRealtime() {
     final snapshots =
         FirebaseFirestore.instance.collection('todoList').snapshots();
+
     snapshots.listen((snapshot) {
       final docs = snapshot.docs;
-
+      // final String id = snapshot.id;
       final todoList = docs.map((doc) => Todo(doc)).toList();
       //null check のエラーで、ビックリマークつけて解決したが、まだ理解はしていない
       todoList.sort((a, b) => b.dueDate!.compareTo(a.dueDate!));

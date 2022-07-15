@@ -36,16 +36,22 @@ class _TaskListPageState extends State<TaskListPage> {
                   itemCount: todoList.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Dismissible(
-                      key: ValueKey(todoList[index]), 
+                      key: ValueKey(todoList[index]),
                       child: ListTile(
-                        title: Text( 'Item ${todoList[index].taskName}'),//index]だと何故、itemInstanceとなってしまう？indexだから番号0,1,2...じゃないのか？
+                        title: Text('Item ${todoList[index].taskName}'),
                       ),
                       background: Container(color: Colors.red),
                       onDismissed: (direction) {
-                        setState(() {
-                          //removeAtと、Firebaseのdelete両方をやる必要あるのかな？後者だけで良い感じも。→試してみる。
-                          todoList.removeAt(index);//intを入手する方法？
-                          FirebaseFirestore.instance.collection('todoList').doc().delete();                        });
+                        setState(
+                          () {
+                            //removeAtと、Firebaseのdelete両方をやる必要あるのかな？後者だけで良い感じも。→試してみる。
+                            todoList.removeAt(index);
+                            FirebaseFirestore.instance
+                                .collection('todoList')
+                                .doc()
+                                .delete(); //そもそもこれは、doc.idがないので、おそらく動かぬ。
+                          },
+                        );
                       },
                     );
                   },

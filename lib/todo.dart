@@ -13,6 +13,6 @@ class Todo {
         (doc.data() as Map<String, dynamic>)['createdAt'];
     dueDate = timestamp.toDate();
     dueTime = timestamp.toDate();
-    
+
   }
 }
