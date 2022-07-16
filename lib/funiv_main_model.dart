@@ -3,21 +3,31 @@ import 'package:flutter/material.dart';
 import '/todo.dart';
 
 class MainModel extends ChangeNotifier {
-  List<Todo> todos = [];
+  List<Todo> todos = []; //日本語訳？：「リストです。Todoクラスで定義した３つの変数を使います。」
 
   void getTodoListRealtime() {
     final snapshots =
-        FirebaseFirestore.instance.collection('todoList').snapshots();
+        FirebaseFirestore.instance.collection('todoList').snapshots(); //
+
+    //snapshots snapshot それぞれfirebaesのデータのどこを指している？
 
     snapshots.listen((snapshot) {
-      final docs = snapshot.docs;
-      // final String id = snapshot.id;
-      final todoList = docs.map((doc) => Todo(doc)).toList();
-      //null check のエラーで、ビックリマークつけて解決したが、まだ理解はしていない
-      todoList.sort((a, b) => b.dueDate!.compareTo(a.dueDate!));
+      //データ4つここで認識
 
-      //ここで、this.と出てくる理由？　何をしている？　これはコンストラクタ？
-      this.todos = todoList; //ここを日本語訳するとしたら、どうなる？
+      final docs = snapshot.docs; //コレクション内のドキュメント全部
+
+      // final String id = docs.id; //id取得したい。。。
+
+      //docsは４つある。一つ一つのdocを、"Todoクラスに入れて”、
+      //"4つの変数を作って"、再びリストに戻した。
+      //Todoクラスのコンストラクタには、idがないから、ここで作ってあげれば、idも変数として使えるようになる
+      final todoList = docs.map((doc) => Todo(doc)).toList();
+
+      //todo.dart内でidを定義しようとするが、[title]とはまた違う場所にあるので、方法わからず。。。
+
+      //並べ替えて、最後にリストをtodoListというリストの箱に詰め替えてる
+      todoList.sort((a, b) => b.dueDate!.compareTo(a.dueDate!));
+      todos = todoList;
 
       notifyListeners();
     });

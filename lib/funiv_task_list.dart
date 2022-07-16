@@ -30,25 +30,26 @@ class _TaskListPageState extends State<TaskListPage> {
             ),
             body: Consumer<MainModel>(
               builder: (context, model, child) {
-                final todoList = model.todos;
+                final todos = model.todos;
 
                 return ListView.builder(
-                  itemCount: todoList.length,
+                  itemCount: todos.length,
                   itemBuilder: (BuildContext context, int index) {
+                    final todo = todos[index];
                     return Dismissible(
-                      key: ValueKey(todoList[index]),
+                      key: ValueKey(todo),
                       child: ListTile(
-                        title: Text('Item ${todoList[index].taskName}'),
+                        title: Text('Item ${todo.taskName}'),
                       ),
                       background: Container(color: Colors.red),
                       onDismissed: (direction) {
                         setState(
                           () {
                             //removeAtと、Firebaseのdelete両方をやる必要あるのかな？後者だけで良い感じも。→試してみる。
-                            todoList.removeAt(index);
+                            todos.removeAt(index);
                             FirebaseFirestore.instance
                                 .collection('todoList')
-                                .doc()
+                                .doc(todo.id)
                                 .delete(); //そもそもこれは、doc.idがないので、おそらく動かぬ。
                           },
                         );
