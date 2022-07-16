@@ -6,22 +6,23 @@ class MainModel extends ChangeNotifier {
   List<Todo> todos = []; //日本語訳？：「リストです。Todoクラスで定義した３つの変数を使います。」
 
   void getTodoListRealtime() {
-    final snapshots =
+    final querySnapshots =
         FirebaseFirestore.instance.collection('todoList').snapshots(); //
 
     //snapshots snapshot それぞれfirebaesのデータのどこを指している？
 
-    snapshots.listen((snapshot) {
+    querySnapshots.listen((querySnapshot) {
+      //future型の延長→stream型　：　いとこ
       //データ4つここで認識
 
-      final docs = snapshot.docs; //コレクション内のドキュメント全部
+      final queryDocumentSnapshots = querySnapshot.docs; //コレクション内のドキュメント全部
 
-      // final String id = docs.id; //id取得したい。。。
+      // final String id = queryDocumentSnapshots.id; //id取得したい。。。
 
       //docsは４つある。一つ一つのdocを、"Todoクラスに入れて”、
       //"4つの変数を作って"、再びリストに戻した。
       //Todoクラスのコンストラクタには、idがないから、ここで作ってあげれば、idも変数として使えるようになる
-      final todoList = docs.map((doc) => Todo(doc)).toList();
+      final todoList = queryDocumentSnapshots.map((doc) => Todo(doc)).toList();
 
       //todo.dart内でidを定義しようとするが、[title]とはまた違う場所にあるので、方法わからず。。。
 
