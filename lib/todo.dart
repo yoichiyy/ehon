@@ -2,8 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Todo {
   String taskName = ""; //クラスが所持している変数
-  DateTime? dueDate;
-  DateTime? dueTime;
+  String dueDate = "";
+  String dueTime = "";
   String id = "";
 
   //コンストラクタ
@@ -14,8 +14,8 @@ class Todo {
     final Timestamp timestamp =
         (documentSnapshot.data() as Map<String, dynamic>)['createdAt'];
 
-    dueDate = timestamp.toDate();
-    dueTime = timestamp.toDate();
+    dueDate = '${timestamp.toDate().month.toString()} - ${timestamp.toDate().day.toString()}';
+    dueTime = '${timestamp.toDate().hour.toString()} - ${timestamp.toDate().minute.toString()}';
     id = documentSnapshot.id;
   }
 }

@@ -7,7 +7,7 @@ class MainModel extends ChangeNotifier {
 
   void getTodoListRealtime() {
     final querySnapshots =
-        FirebaseFirestore.instance.collection('todoList').snapshots(); //
+        FirebaseFirestore.instance.collection('todoList').snapshots(); 
 
     //snapshots snapshot それぞれfirebaesのデータのどこを指している？
 
@@ -41,13 +41,8 @@ class AddBookModel extends ChangeNotifier {
 
   Future addBook() async {
     if (taskName == null || taskName == "") {
-      throw 'タイトルが入力されていません';
+      throw 'タスク名が入力されていません';
     }
-
-    if (dueDate == null || dueDate!.isEmpty) {
-      throw '著者が入力されていません';
-    }
-
     // firestoreに追加
     await FirebaseFirestore.instance.collection('books').add({
       'title': taskName,

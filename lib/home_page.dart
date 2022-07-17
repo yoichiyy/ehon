@@ -3,7 +3,7 @@ import 'package:counter/main.dart';
 import 'package:counter/models/database_provider.dart';
 import 'package:counter/navigation.dart';
 import 'package:counter/history_page.dart';
-import 'package:counter/%E3%83%BB%E3%83%BB%E3%83%BBtask_list_page.dart';
+import 'package:counter/%E5%89%8A%E9%99%A4OK/%E3%83%BB%E3%83%BB%E3%83%BBtask_list_page.dart';
 import 'package:counter/ui/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'models/counter_model.dart';
@@ -254,26 +254,40 @@ class _TaskCardState extends State<TaskCard> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        setState(() =>
-                            _pickedDate = DateTime(
+                        setState(() => _pickedDate = DateTime(
                               DateTime.now().year,
                               DateTime.now().month,
-                              DateTime.now().day + 1));
+                              DateTime.now().day + 1,
+                              DateTime.now().hour,
+                              DateTime.now().minute,
+                            ));
                         debugPrint(_pickedDate.toString());
                       },
                       child: const Text("明日"),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        setState(() =>
-                            _pickedDate = DateTime(DateTime.now().day + 7));
+                        setState(() => _pickedDate = DateTime(
+                              DateTime.now().year,
+                              DateTime.now().month,
+                              DateTime.now().day + 7,
+                              DateTime.now().hour,
+                              DateTime.now().minute,
+                            ));
+                        debugPrint(_pickedDate.toString());
                       },
                       child: const Text("来週"),
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        setState(() =>
-                            _pickedDate = DateTime(DateTime.now().month + 1));
+                        setState(() => _pickedDate = DateTime(
+                              DateTime.now().year,
+                              DateTime.now().month + 1,
+                              DateTime.now().day,
+                              DateTime.now().hour,
+                              DateTime.now().minute,
+                            ));
+                        debugPrint(_pickedDate.toString());
                       },
                       child: const Text("来月〜"),
                     )
@@ -284,22 +298,38 @@ class _TaskCardState extends State<TaskCard> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        //上の【明日】ボタンはあっているのか？　これをdebugで調べる方法を知りたい。
-                        //debugPrintをやってみた→多分うまく表示されている。でも、0026-01-01？？
-
-
-                        //朝を押したら「時刻」を７にしたい！どうすればよいのか？ → datetime.nowの時刻を指定する方法
-                        //上のボタンはあっているのだろうか？
-                        // setState(() => _pickedDate = DateTime(DateTime.now().hour = 7));
+                        setState(() => _pickedDate = DateTime(
+                              _pickedDate.year,
+                              _pickedDate.month,
+                              _pickedDate.day,
+                              6,
+                            ));
+                        debugPrint(_pickedDate.toString());
                       },
                       child: const Text("朝"),
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() => _pickedDate = DateTime(
+                              _pickedDate.year,
+                              _pickedDate.month,
+                              _pickedDate.day,
+                              12,
+                            ));
+                        debugPrint(_pickedDate.toString());
+                      },
                       child: const Text("昼"),
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        setState(() => _pickedDate = DateTime(
+                              _pickedDate.year,
+                              _pickedDate.month,
+                              _pickedDate.day,
+                              19,
+                            ));
+                        debugPrint(_pickedDate.toString());
+                      },
                       child: const Text("夜"),
                     )
                   ],
@@ -325,7 +355,7 @@ class _TaskCardState extends State<TaskCard> {
         ),
         MaterialButton(
           color: Colors.green,
-          onPressed: () async{
+          onPressed: () async {
             if (_controller.text.isEmpty) {
               showDialog(
                 context: context,
@@ -345,22 +375,17 @@ class _TaskCardState extends State<TaskCard> {
                 },
               );
               return;
-            }
-
-            //関数名の代わりに、直接書いてみる。returnの部分はどうしたら良いのだろう。
-            // addTask(_pickedDate, _controller.text);
-
-       await FirebaseFirestore.instance
-          .collection('posts') // コレクションID指定
-          .doc() // ドキュメントID自動生成
-          .set({
-        'text': _controller.value.text, //stringを送る
-        'date': _pickedDate //本当はタイムスタンプ　「サーバー　タイムスタンプ」検索
-      });
-
-            
+            } //if
+            await FirebaseFirestore.instance
+                .collection('todoList') // コレクションID指定
+                .doc() // ドキュメントID自動生成
+                .set({
+              'text': _controller.value.text, //stringを送る
+              'date': _pickedDate //本当はタイムスタンプ　「サーバー　タイムスタンプ」検索
+            });
+            debugPrint("登録しました");
           },
-          child: const Text("ADD TASK"),
+          child: const Text("登録"),
         ),
       ],
     );
