@@ -20,20 +20,20 @@ class _MyHomePageState extends State<MyHomePage> {
 
   final _controller = TextEditingController();
 
-  int _countToday = 0;
+  int countToday = 0;
   void _incrementCounter() async {
     await addCounter(DateTime.now(), _controller.text);
     setState(() {
-      _countToday++;
+      countToday++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text("ehon"),
-      // ),
+      appBar: AppBar(
+        title: const Text("ehon"),
+      ),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
@@ -142,25 +142,26 @@ class _MyHomePageState extends State<MyHomePage> {
     super.dispose();
   }
 
-  Future<void> _showBookDialog(String title, String content) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text(title),
-          content: Text(content),
-          actions: [
-            TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
+//おそらく削除してOK
+  // Future<void> _showBookDialog(String title, String content) {
+  //   return showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return AlertDialog(
+  //         title: Text(title),
+  //         content: Text(content),
+  //         actions: [
+  //           TextButton(
+  //             child: const Text('OK'),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 }
 
 class HomeCardWidget extends StatelessWidget {
@@ -338,6 +339,8 @@ class _TaskCardState extends State<TaskCard> {
             ),
           ),
         ),
+
+        //これも、上のexpandedの中にどうして入れることができないか？
         MaterialButton(
           color: Colors.green,
           onPressed: () async {
