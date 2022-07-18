@@ -334,21 +334,6 @@ class _TaskCardState extends State<TaskCard> {
                     )
                   ],
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                      //2
-                      onPressed: () {},
-                      child: const Text("ON"),
-                    ),
-                    ElevatedButton(
-                      //2
-                      onPressed: () {},
-                      child: const Text("OFF"),
-                    ),
-                  ],
-                ),
               ],
             ),
           ),
@@ -380,8 +365,8 @@ class _TaskCardState extends State<TaskCard> {
                 .collection('todoList') // コレクションID指定
                 .doc() // ドキュメントID自動生成
                 .set({
-              'text': _controller.value.text, //stringを送る
-              'date': _pickedDate //本当はタイムスタンプ　「サーバー　タイムスタンプ」検索
+              'title': _controller.value.text, //stringを送る
+              'createdAt': _pickedDate //本当はタイムスタンプ　「サーバー　タイムスタンプ」検索
             });
             debugPrint("登録しました");
           },

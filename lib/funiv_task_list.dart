@@ -17,7 +17,7 @@ class _TaskListPageState extends State<TaskListPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ehonタスク',
+      title: 'ehon',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -26,7 +26,7 @@ class _TaskListPageState extends State<TaskListPage> {
         child: Scaffold(
             bottomNavigationBar: BottomBar(currentIndex: 1),
             appBar: AppBar(
-              title: Text('FUNIV TODOアプリ'),
+              title: Text('やること'),
             ),
             body: Consumer<MainModel>(
               builder: (context, model, child) {
@@ -39,7 +39,8 @@ class _TaskListPageState extends State<TaskListPage> {
                     return Dismissible(
                       key: ValueKey(todo),
                       child: ListTile(
-                        title: Text('Item ${todo.taskName}'),
+                        title: Text(
+                            '${todo.taskName}   ${todo.dueDate} @ ${todo.dueTime}'),
                       ),
                       background: Container(color: Colors.red),
                       onDismissed: (direction) {
