@@ -19,7 +19,6 @@ class CounterModelAdapter extends TypeAdapter<CounterModel> {
     return CounterModel(
       id: fields[0] as String,
       count: fields[1] as int,
-      bookTitles: (fields[2] as List?)?.cast<String>(),
     );
   }
 
@@ -30,9 +29,7 @@ class CounterModelAdapter extends TypeAdapter<CounterModel> {
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
-      ..write(obj.count)
-      ..writeByte(2)
-      ..write(obj.bookTitles);
+      ..write(obj.count);
   }
 
   @override

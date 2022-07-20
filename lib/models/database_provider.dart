@@ -32,7 +32,7 @@ Future<CounterModel> getCounterForDay(DateTime date) async {
   CounterModel? currentModel = box.get(id);
 
   return currentModel ??
-      CounterModel(bookTitles: [], count: 0, id: getIdFromDate(date));
+      CounterModel(count: 0, id: getIdFromDate(date));
 }
 
 Future<List<CounterModel>> getAllCounters() async {
@@ -42,17 +42,14 @@ Future<List<CounterModel>> getAllCounters() async {
   //return List.filled(200, counterModel);
 }
 
-Future<int> addCounter(DateTime date, String bookTitle) async {
+Future<int> addCounter(DateTime date) async {
   var box = await Hive.openBox<CounterModel>(hiveCounterBoxName);
   final CounterModel currentCounter = await getCounterForDay(date);
   final updatedCounter = (currentCounter.count) + 1;
-  final updatedBookList = (currentCounter.bookTitles ?? <String>[])
-    ..add(bookTitle);
 
   final counterModel = CounterModel(
     count: updatedCounter,
     id: currentCounter.id,
-    bookTitles: updatedBookList,
   );
   box.put(counterModel.key ?? counterModel.id, counterModel);
   return updatedCounter;
@@ -68,20 +65,20 @@ DateTime getDateFromId(String id) {
       int.parse(getListOfNumbers[1]), int.parse(getListOfNumbers[2]));
 }
 
-//hiveを用いた、addTask関数
-Future<TaskModel> addTask(DateTime date, String task) async {
+// //hiveを用いた、addTask関数
+// Future<TaskModel> addTask(DateTime date, String task) async {
 
 
 
 
-  var box = await Hive.openBox<TaskModel>(hiveTaskBoxName);
-  final taskModel = TaskModel(
-      id: DateTime.now().millisecondsSinceEpoch.toString(),
-      title: task,
-      date: date);
-  box.add(taskModel);
-  return taskModel;
-}
+//   var box = await Hive.openBox<TaskModel>(hiveTaskBoxName);
+//   final taskModel = TaskModel(
+//       id: DateTime.now().millisecondsSinceEpoch.toString(),
+//       title: task,
+//       date: date);
+//   box.add(taskModel);
+//   return taskModel;
+// }
 
 
 

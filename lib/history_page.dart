@@ -10,22 +10,20 @@ class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(  
+      appBar: AppBar(
         title: Text("History"),
         automaticallyImplyLeading: false,
       ),
-      bottomNavigationBar: BottomBar(currentIndex: 2) ,
+      bottomNavigationBar: BottomBar(currentIndex: 2),
       body: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.bottomCenter,
-            end: Alignment.topCenter,
-            colors: [
+            gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                end: Alignment.topCenter,
+                colors: [
               Colors.blue.shade100.withOpacity(0.2),
               Colors.red.shade500.withOpacity(0.2)
-            ]
-          )
-        ),
+            ])),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -35,7 +33,7 @@ class HistoryPage extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.only(top: 8.0),
                     child: Text(
-                      "Today: ${snapshot.data?.bookTitles?.join(", ") ?? "No book data"}",
+                      "Today: ${snapshot.data?.count ?? "No book data"}",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 22),
                     ),
@@ -92,7 +90,6 @@ class HistoryPage extends StatelessWidget {
                                 final count =
                                     listOfCounter[index].count.toString();
                                 final day = listOfCounter[index].id;
-                                final bookTitle = listOfCounter[index].bookTitles?.join(", ") ?? "No book data";
                                 return Card(
                                   margin: const EdgeInsets.only(
                                     left: 12,
@@ -105,9 +102,8 @@ class HistoryPage extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         ListTileText(title: "Date", text: day),
-                                        ListTileText(title: "Count", text: count),
                                         ListTileText(
-                                            title: "Title", text: bookTitle),
+                                            title: "Count", text: count),
                                       ],
                                     ),
                                   ),
@@ -146,9 +142,6 @@ class ListTileText extends StatelessWidget {
     ]));
   }
 }
-
-
-
 
 class Animal {
   final String name;

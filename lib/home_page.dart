@@ -18,11 +18,11 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  final _controller = TextEditingController();
+  // final _controller = TextEditingController();
 
   int countToday = 0;
   void _incrementCounter() async {
-    await addCounter(DateTime.now(), _controller.text);
+    await addCounter(DateTime.now());
     setState(() {
       countToday++;
     });
@@ -108,7 +108,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     );
                   }),
-              // const Text("Total Today"),
             ),
           ),
         ],
@@ -123,8 +122,16 @@ class _MyHomePageState extends State<MyHomePage> {
           width: 70,
           height: 70,
           child: FloatingActionButton(
-            onPressed: () {
-              _incrementCounter();
+            onPressed: () async {
+              await FirebaseFirestore.instance
+                  .collection('ehoncount') // コレクションID指定
+                  .doc() // ドキュメントID自動生成
+                  .set({
+                // 'count': , //stringを送る
+                'createdAt': DateTime.now() //本当はタイムスタンプ　「サーバー　タイムスタンプ」検索
+              });
+
+              // _incrementCounter(); hive
             },
             heroTag: "Increment",
             tooltip: "Increment",
@@ -135,12 +142,12 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  @override
-  void dispose() {
-    // Clean up the controller when the widget is disposed.
-    _controller.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   // Clean up the controller when the widget is disposed.
+  //   _controller.dispose();
+  //   super.dispose();
+  // }
 
 //おそらく削除してOK
   // Future<void> _showBookDialog(String title, String content) {
@@ -224,6 +231,9 @@ class _TaskCardState extends State<TaskCard> {
                   children: [
                     Expanded(
                       child: TextFormField(
+//１．singlechild scroll view　→　すくろールできるようにする方法もある。
+//expanded 1:2　になってるので、これをやめないと。高さを固定するなど。
+
                         controller: _controller,
                         decoration: const InputDecoration(hintText: "やること"),
                       ),
