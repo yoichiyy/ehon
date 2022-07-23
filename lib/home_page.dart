@@ -64,7 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ],
       ),
-      bottomNavigationBar: const BottomBar(currentIndex: 0),
+      bottomNavigationBar: const BottomBar(currentIndex: 1),
     );
   }
 
@@ -130,7 +130,8 @@ class _MyHomePageState extends State<MyHomePage> {
               .set({
             // 'count': , //stringを送る
             'ehon_id':
-                " ${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}plus" //本当はタイムスタンプ　「サーバー　タイムスタンプ」検索
+                " ${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}plus"
+            ''
           });
           // _incrementCounter(); hive
         },

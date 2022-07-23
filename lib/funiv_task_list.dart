@@ -24,7 +24,7 @@ class _TaskListPageState extends State<TaskListPage> {
       home: ChangeNotifierProvider<MainModel>(
         create: (_) => MainModel()..getTodoListRealtime(),
         child: Scaffold(
-            bottomNavigationBar: BottomBar(currentIndex: 1),
+            bottomNavigationBar: BottomBar(currentIndex: 0),
             appBar: AppBar(
               title: Text('やること'),
             ),
@@ -38,9 +38,22 @@ class _TaskListPageState extends State<TaskListPage> {
                     final todo = todos[index];
                     return Dismissible(
                       key: ValueKey(todo),
-                      child: ListTile(
-                        title: Text(
-                            '${todo.taskName}   ${todo.dueDate} @ ${todo.dueTime}'),
+                      child: InkWell(
+                        onTap: () async{
+                          final String? title = await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => EditTaskPage(todo),
+                            ),
+                          );
+
+                          
+                          debugPrint("dismissible List クリックしました");
+                        },
+                        child: ListTile(
+                          title: Text(
+                              '${todo.taskName}   ${todo.dueDate} @ ${todo.dueTime}'),
+                        ),
                       ),
                       background: Container(color: Colors.red),
                       onDismissed: (direction) {
