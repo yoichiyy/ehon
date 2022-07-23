@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:counter/homeCard.dart';
 import 'package:counter/main.dart';
 import 'package:counter/models/database_provider.dart';
 import 'package:counter/navigation.dart';
@@ -37,7 +38,8 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Column(
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          Flexible(
+          Expanded(
+            flex: 2,
             child: HomeCardWidget(
               title: "えほん",
               color: Colors.red.withOpacity(0.2),
@@ -53,10 +55,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           Expanded(
-            flex: 2,
+            flex: 3,
             child: HomeCardWidget(
               title: "TODO",
-              color: Colors.amber.withOpacity(0.2),
+              color: Colors.blue.withOpacity(0.2),
               child: const TaskCard(),
             ),
           ),
@@ -116,28 +118,25 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _buttonArea() {
-    return Expanded(
-      child: Container(
-        child: SizedBox(
-          width: 70,
-          height: 70,
-          child: FloatingActionButton(
-            onPressed: () async {
-              await FirebaseFirestore.instance
-                  .collection('ehoncount') // コレクションID指定
-                  .doc() // ドキュメントID自動生成
-                  .set({
-                // 'count': , //stringを送る
-                'createdAt': DateTime.now() //本当はタイムスタンプ　「サーバー　タイムスタンプ」検索
-              });
-
-              // _incrementCounter(); hive
-            },
-            heroTag: "Increment",
-            tooltip: "Increment",
-            child: const Icon(Icons.add),
-          ),
-        ),
+    return SizedBox(
+      width: 60,
+      height: 60,
+      child: FloatingActionButton(
+        onPressed: () async {
+          debugPrint("ehonカウント送信 to Fire");
+          await FirebaseFirestore.instance
+              .collection('ehoncount') // コレクションID指定
+              .doc() // ドキュメントID自動生成
+              .set({
+            // 'count': , //stringを送る
+            'ehon_id':
+                " ${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}plus" //本当はタイムスタンプ　「サーバー　タイムスタンプ」検索
+          });
+          // _incrementCounter(); hive
+        },
+        heroTag: "Increment",
+        tooltip: "Increment",
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -149,61 +148,6 @@ class _MyHomePageState extends State<MyHomePage> {
   //   super.dispose();
   // }
 
-//おそらく削除してOK
-  // Future<void> _showBookDialog(String title, String content) {
-  //   return showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return AlertDialog(
-  //         title: Text(title),
-  //         content: Text(content),
-  //         actions: [
-  //           TextButton(
-  //             child: const Text('OK'),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-}
-
-class HomeCardWidget extends StatelessWidget {
-  const HomeCardWidget(
-      {Key? key, required this.color, required this.title, required this.child})
-      : super(key: key);
-
-  final Color color;
-  final String title;
-  final Widget child;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Card(
-        color: color,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                title.toUpperCase(),
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-              Flexible(
-                child: Center(child: child),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 }
 
 class TaskCard extends StatefulWidget {
@@ -259,6 +203,10 @@ class _TaskCardState extends State<TaskCard> {
                       child: Text("日付指定"),
                     ),
                   ],
+                ),
+                SizedBox(
+                  width: double.infinity,
+                  height: 10,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,

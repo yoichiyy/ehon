@@ -23,16 +23,13 @@ Future<int> getCounterForMonth(int month, int year) async {
 }
 
 Future<CounterModel> getCounterForDay(DateTime date) async {
+//
+
+//hiveのcode
   var box = await Hive.openBox<CounterModel>(hiveCounterBoxName);
-  final values = box.values.toList();
-  print(values);
-
   final id = getIdFromDate(date);
-
   CounterModel? currentModel = box.get(id);
-
-  return currentModel ??
-      CounterModel(count: 0, id: getIdFromDate(date));
+  return currentModel ?? CounterModel(count: 0, id: getIdFromDate(date));
 }
 
 Future<List<CounterModel>> getAllCounters() async {
@@ -43,6 +40,9 @@ Future<List<CounterModel>> getAllCounters() async {
 }
 
 Future<int> addCounter(DateTime date) async {
+  //firebase
+
+  //hive original code
   var box = await Hive.openBox<CounterModel>(hiveCounterBoxName);
   final CounterModel currentCounter = await getCounterForDay(date);
   final updatedCounter = (currentCounter.count) + 1;
@@ -68,9 +68,6 @@ DateTime getDateFromId(String id) {
 // //hiveを用いた、addTask関数
 // Future<TaskModel> addTask(DateTime date, String task) async {
 
-
-
-
 //   var box = await Hive.openBox<TaskModel>(hiveTaskBoxName);
 //   final taskModel = TaskModel(
 //       id: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -79,33 +76,6 @@ DateTime getDateFromId(String id) {
 //   box.add(taskModel);
 //   return taskModel;
 // }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //↓質問用↓120-134　アンコメント
 //・引数として持ってくるという条件だから、if使うのやめろということか？（上の青コメント）
@@ -117,46 +87,35 @@ DateTime getDateFromId(String id) {
 //   String? taskName;
 //   String? dueDate;
 
-  // Future<void> addBook(DateTime dueDate, String taskName) async {
-  //   if (taskName == null || taskName == "") {
-  //     throw 'タイトルが入力されていません';
-  //   }
+// Future<void> addBook(DateTime dueDate, String taskName) async {
+//   if (taskName == null || taskName == "") {
+//     throw 'タイトルが入力されていません';
+//   }
 
-  //   if (dueDate == null || dueDate!.isEmpty) {
-  //     throw '著者が入力されていません';
-  //   }
+//   if (dueDate == null || dueDate!.isEmpty) {
+//     throw '著者が入力されていません';
+//   }
 
-  //   // firestoreに追加
-  //   await FirebaseFirestore.instance.collection('books').add({
-  //     'title': taskName,
-  //     'author': dueDate,
-  //   });
-  // }
+//   // firestoreに追加
+//   await FirebaseFirestore.instance.collection('books').add({
+//     'title': taskName,
+//     'author': dueDate,
+//   });
+// }
 // }
 
-
 //作り直し。ifを外す
-  Future<void> addBook(DateTime dueDate, String taskName) async {
-    if (taskName == "") {
-      throw 'タイトルが入力されていません';
-    }
-
-    // firestoreに追加
-    await FirebaseFirestore.instance.collection('books').add({
-      'title': taskName,
-      'author': dueDate,
-    });
+Future<void> addBook(DateTime dueDate, String taskName) async {
+  if (taskName == "") {
+    throw 'タイトルが入力されていません';
   }
 
-
-
-
-
-
-
-
-
-
+  // firestoreに追加
+  await FirebaseFirestore.instance.collection('books').add({
+    'title': taskName,
+    'author': dueDate,
+  });
+}
 
 Future<List<TaskModel>> getAllTasks() async {
   var box = await Hive.openBox<TaskModel>(hiveTaskBoxName);
