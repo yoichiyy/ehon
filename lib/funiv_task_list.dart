@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'edit_task/edit_task.dart';
 import 'funiv_main_model.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -46,13 +47,11 @@ class _TaskListPageState extends State<TaskListPage> {
                               builder: (context) => EditTaskPage(todo),
                             ),
                           );
-
-                          
                           debugPrint("dismissible List クリックしました");
                         },
                         child: ListTile(
                           title: Text(
-                              '${todo.taskName}   ${todo.dueDate} @ ${todo.dueTime}'),
+                              '${todo.taskName} ${todo.dueDate} ${todo.dueTime}'),
                         ),
                       ),
                       background: Container(color: Colors.red),

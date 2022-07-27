@@ -1,42 +1,47 @@
-import 'package:book_list_sample/domain/book.dart';
+// import 'package:book_list_sample/domain/book.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class EditBookModel extends ChangeNotifier {
-  final Book book;
-  EditBookModel(this.book) {
-    titleController.text = book.title;
-    authorController.text = book.author;
+import '../todo.dart';
+
+class EditTaskModel extends ChangeNotifier {
+  final Todo todo;
+  EditTaskModel(this.todo) {
+    titleController.text = todo.taskName;
+    authorController.text = '${todo.dueDate} ${todo.dueTime}';
   }
 
   final titleController = TextEditingController();
   final authorController = TextEditingController();
 
-  String? title;
-  String? author;
+  String? taskName;
+  String? dueDate;
 
-  void setTitle(String title) {
-    this.title = title;
+  void setTaskName(String taskName) {
+    this.taskName = taskName;
     notifyListeners();
   }
 
-  void setAuthor(String author) {
-    this.author = author;
+  void setDueDate(String dueDate) {
+    this.dueDate = dueDate;
     notifyListeners();
   }
 
   bool isUpdated() {
-    return title != null || author != null;
+    return taskName != null || dueDate != null;
   }
 
   Future update() async {
-    this.title = titleController.text;
-    this.author = authorController.text;
+    taskName = titleController.text;
+    dueDate = authorController.text;
 
     // firestoreに追加
-    await FirebaseFirestore.instance.collection('books').doc(book.id).update({
-      'title': title,
-      'author': author,
+    await FirebaseFirestore.instance
+        .collection('todoList')
+        .doc(todo.id)
+        .update({
+      'title': taskName,
+      'createdAt': dueDate,
     });
   }
 }
