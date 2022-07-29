@@ -8,14 +8,14 @@ class EditTaskModel extends ChangeNotifier {
   final Todo todo;
   EditTaskModel(this.todo) {
     titleController.text = todo.taskName;
-    authorController.text = '${todo.dueDate} ${todo.dueTime}';
+    authorController.text = todo.timestamp;
   }
 
   final titleController = TextEditingController();
   final authorController = TextEditingController();
 
   String? taskName;
-  String? dueDate;
+  String? timestamp;
 
   void setTaskName(String taskName) {
     this.taskName = taskName;
@@ -23,17 +23,17 @@ class EditTaskModel extends ChangeNotifier {
   }
 
   void setDueDate(String dueDate) {
-    this.dueDate = dueDate;
+    this.timestamp = timestamp;
     notifyListeners();
   }
 
   bool isUpdated() {
-    return taskName != null || dueDate != null;
+    return taskName != null || timestamp != null;
   }
 
   Future update() async {
     taskName = titleController.text;
-    dueDate = authorController.text;
+    timestamp = authorController.text;
 
     // firestoreに追加
     await FirebaseFirestore.instance
@@ -41,7 +41,7 @@ class EditTaskModel extends ChangeNotifier {
         .doc(todo.id)
         .update({
       'title': taskName,
-      'createdAt': dueDate,
+      'createdAt': timestamp,
     });
   }
 }
