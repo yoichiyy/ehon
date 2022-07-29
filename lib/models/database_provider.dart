@@ -5,22 +5,33 @@ import 'package:counter/models/task_model.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
 
-Future<int> getCounterForMonth(int month, int year) async {
-  var box = await Hive.openBox<CounterModel>(hiveCounterBoxName);
-  final values = box.values.toList();
+//firebaseのコード
+Future<int> getCounterForMonth(int month, int year) async{
+  final _store = FirebaseFirestore.instance;
+  //F質問：なぜこれ（awaitの直後にvar）がいけないのか？
+  //F質問：lengthをこのコードにどうやって、組み込む？　変数varを作れないとなると・・・。lengh()をつけたらエラーになった。
+  await var monthCount = lenght(_store.collection('ehoncount').where('yearMonth', isEqualTo: year&month).get());
 
-  var count = 0;
-
-  for (var counter in values) {
-    final date = getDateFromId(counter.id);
-
-    if (date.month == month && date.year == year) {
-      count += counter.count;
-    }
-  }
-
-  return count;
 }
+
+
+// //hiveのコード
+// Future<int> getCounterForMonth(int month, int year) async {
+//   var box = await Hive.openBox<CounterModel>(hiveCounterBoxName);
+//   final values = box.values.toList();
+
+//   var count = 0;
+
+//   for (var counter in values) {
+//     final date = getDateFromId(counter.id);
+
+//     if (date.month == month && date.year == year) {
+//       count += counter.count;
+//     }
+//   }
+
+//   return count;
+// }
 
 Future<CounterModel> getCounterForDay(DateTime date) async {
 //

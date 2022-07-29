@@ -129,9 +129,8 @@ class _MyHomePageState extends State<MyHomePage> {
               .doc() // ドキュメントID自動生成
               .set({
             // 'count': , //stringを送る
-            'ehon_id':
-                " ${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}plus"
-            ''
+            'ehon_id': DateTime.now()
+            // " ${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}plus"
           });
           // _incrementCounter(); hive
         },
