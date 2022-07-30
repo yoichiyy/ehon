@@ -8,7 +8,7 @@ class EditTaskModel extends ChangeNotifier {
   final Todo todo;
   EditTaskModel(this.todo) {
     titleController.text = todo.taskName;
-    authorController.text = todo.timestamp;
+    authorController.text = todo.timestamp!.toDate().month.toString();
   }
 
   final titleController = TextEditingController();
