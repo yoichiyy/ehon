@@ -1,6 +1,7 @@
 // import 'package:book_list_sample/domain/book.dart';
 // import 'package:book_list_sample/edit_book/edit_book_model.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../funiv_main_model.dart';
@@ -17,7 +18,7 @@ class EditTaskPage extends StatelessWidget {
       create: (_) => EditTaskModel(todo), //F質問：この顔文字のようなものは何だ…
       child: Scaffold(
         appBar: AppBar(
-          title: Text('タスクを編集'),
+          title: const Text('タスクを編集'),
         ),
         body: Center(
           child: Consumer<EditTaskModel>(builder: (context, model, child) {
@@ -25,28 +26,42 @@ class EditTaskPage extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  TextField(
-                    controller: model.titleController,
-                    decoration: InputDecoration(
-                      hintText: 'タスク名',
+                  //datetimepicker　はりつけ
+                  TextButton(
+                    onPressed: () {
+                      DatePicker.showDatePicker(context,
+                          showTitleActions: true,
+                          minTime: DateTime(2022, 3, 5),
+                          maxTime: DateTime(2025, 6, 7), onChanged: (date) {
+                        debugPrint('change $date');
+                      }, onConfirm: (date) {
+                        debugPrint('confirm $date');
+                      }, currentTime: DateTime.now(), locale: LocaleType.jp);
+                    },
+                    child: const Text(
+                      'show date time picker (Japanese)',
+                      style: TextStyle(color: Colors.blue),
                     ),
+                  ),
+                  Text(
+                    controller: model.dateTimeController,
                     onChanged: (text) {
                       model.setTaskName(text);
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 8,
                   ),
                   TextField(
                     controller: model.authorController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       hintText: '日付',
                     ),
                     onChanged: (text) {
                       model.setDueDate(text);
                     },
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 16,
                   ),
                   ElevatedButton(
@@ -66,7 +81,7 @@ class EditTaskPage extends StatelessWidget {
                             }
                           }
                         : null,
-                    child: Text('更新する'),
+                    child: const Text('更新する'),
                   ),
                 ],
               ),

@@ -7,11 +7,11 @@ import '../todo.dart';
 class EditTaskModel extends ChangeNotifier {
   final Todo todo;
   EditTaskModel(this.todo) {
-    titleController.text = todo.taskName;
+    dateTimeController.text = todo.taskName;
     authorController.text = todo.timestamp!.toDate().month.toString();
   }
 
-  final titleController = TextEditingController();
+  final dateTimeController = TextEditingController();
   final authorController = TextEditingController();
 
   String? taskName;
@@ -32,7 +32,7 @@ class EditTaskModel extends ChangeNotifier {
   }
 
   Future update() async {
-    taskName = titleController.text;
+    taskName = dateTimeController.text;
     timestamp = authorController.text;
 
     // firestoreに追加
