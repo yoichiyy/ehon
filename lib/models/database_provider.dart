@@ -8,14 +8,13 @@ import 'package:flutter/material.dart';
 // firebaseのコード
 Future<int> getCounterForMonth(int month, int year) async {
   final _store = FirebaseFirestore.instance;
-  //F質問：なぜこれ（awaitの直後にvar）がいけないのか？
-  //F質問：lengthをこのコードにどうやって、組み込む？　変数varを作れないとなると・・・。lengh()をつけたらエラーになった。
   var monthData = await _store.collection('ehoncount').get();
   //  .where('yearMonth', isEqualTo: year&month).get();
   //https://stackoverflow.com/questions/54014679/return-type-of-timestamp-from-firestore-and-comparing-to-datetime-now-in-flutt
   //firebase firestore timestamp greater than flutter
   //https://flutter.ctrnost.com/basic/interactive/form/datapicker/
   var countMonthly = monthData.docs.length;
+  return countMonthly;
 }
 
 //hiveのコード
