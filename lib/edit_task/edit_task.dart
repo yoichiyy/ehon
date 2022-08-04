@@ -43,12 +43,11 @@ class EditTaskPage extends StatelessWidget {
                       style: TextStyle(color: Colors.blue),
                     ),
                   ),
-                  Text(
-                    controller: model.dateTimeController,
-                    onChanged: (text) {
-                      model.setTaskName(text);
-                    },
-                  ),
+                  Text("${model.dateTimeController}"),
+
+                  // controller: model.dateTimeController,
+                  // onChanged: (text) {
+                  //   model.setTaskName(text);
                   const SizedBox(
                     height: 8,
                   ),
