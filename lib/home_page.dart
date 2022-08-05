@@ -20,14 +20,13 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   // final _controller = TextEditingController();
-
-  int countToday = 0;
-  void _incrementCounter() async {
-    await addCounter(DateTime.now());
-    setState(() {
-      countToday++;
-    });
-  }
+  // int countToday = 0;
+  // void _incrementCounter() async {
+  //   await addCounter(DateTime.now());
+  //   setState(() {
+  //     countToday++;
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -77,13 +76,14 @@ class _MyHomePageState extends State<MyHomePage> {
           Expanded(
             child: Container(
               margin: const EdgeInsets.all(4),
-              child: FutureBuilder<CounterModel>(
-                  future: getCounterForDay(DateTime.now()),
+              child: FutureBuilder<int>(
+                  future: getCounterForDay(DateTime.now().year,
+                      DateTime.now().month, DateTime.now().day),
                   builder: (context, snapshot) {
                     return Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
-                        "今日: ${snapshot.data?.count}",
+                        "今日: ${snapshot.data}",
                         // "Today: ${snapshot.data?.bookTitles?.join(", ") ?? "No book data"}",
                         textAlign: TextAlign.center,
                         style: const TextStyle(fontSize: 22),
@@ -97,15 +97,35 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Container(
               margin: const EdgeInsets.all(4),
               child: FutureBuilder<int>(
+                // future: getCounterForDay(DateTime.now()),
+                future: getCounterForMonth(
+                    //ここで、DEBUGしても、yearとmonthは確認できないんだろうか。FQ：
+                    DateTime.now().year,
+                    DateTime.now().month),
+                builder: (context, snapshot) {
+                  return Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: Text(
+                      "今月: ${snapshot.data}",
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 22),
+                    ),
+                  );
+                },
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              margin: const EdgeInsets.all(4),
+              child: FutureBuilder<int>(
                   // future: getCounterForDay(DateTime.now()),
-                  future: getCounterForMonth(
-                      DateTime.now().month, DateTime.now().year),
+                  future: getCounterForAll(),
                   builder: (context, snapshot) {
                     return Padding(
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
-                        "今月: ${snapshot.data}",
-                        // "Today: ${snapshot.data?.bookTitles?.join(", ") ?? "No book data"}",
+                        "全部: ${snapshot.data}",
                         textAlign: TextAlign.center,
                         style: const TextStyle(fontSize: 22),
                       ),
@@ -126,12 +146,13 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: () async {
           debugPrint("ehonカウント送信 to Fire");
           await FirebaseFirestore.instance
-              .collection('ehoncount') // コレクションID指定
+              .collection('ehoncount')
               .doc() // ドキュメントID自動生成
               .set({
-            // 'count': , //stringを送る
-            'ehon_id': DateTime.now()
-            // " ${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}plus"
+            'ehon_year': "${DateTime.now().year}",
+            'ehon_month': "${DateTime.now().month}",
+            'ehon_date': "${DateTime.now().day}",
+            'ehon_pm': "plus"
           });
           // _incrementCounter(); hive
         },
@@ -141,14 +162,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
   // @override
   // void dispose() {
   //   // Clean up the controller when the widget is disposed.
   //   _controller.dispose();
   //   super.dispose();
   // }
-
 }
 
 class TaskCard extends StatefulWidget {
