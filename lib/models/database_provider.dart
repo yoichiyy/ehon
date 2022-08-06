@@ -11,16 +11,20 @@ Future<int> getCounterForMonth(int year, int month) async {
   //FQ：これらの違いは？getとsnapshot。getは非同期futureで、
   //snapshotsはstream。リアルタイムデータ取得ということでOK？
   //どういうときにfutureを使い、どういうときにsnapshots?
-  var ehonData = await _store.collection('ehoncount').get();
-  var ahonData = _store.collection('ehoncount').snapshots();
+  final ehonData = await _store.collection('ehoncount').get();
+  final ehonCountStream = _store.collection('ehoncount').snapshots();
+  ehonCountStream.listen((qs) {
+    //変更があったら、listen以下がはしる。
+    print("おはよう");
+  });
 
   //すべての絵本データのカウント：FQ：ehonDataの正体？ getで得たものはなにか？→snapshotを得たとある。snapshotとは？
   var countAll = ehonData.docs.length;
   //今月分だけを取得しようとしている。
   var monthData = await _store
       .collection('ehoncount')
-      .where('ehon_year', isEqualTo: year)
-      .where('ehon_month', isEqualTo: month)
+      .where('ehon_year', isEqualTo: year.toString())
+      .where('ehon_month', isEqualTo: month.toString())
       .get();
 
   var countMonth = monthData.docs.length;
@@ -36,9 +40,9 @@ Future<int> getCounterForDay(int year, int month, int day) async {
   final _store = FirebaseFirestore.instance;
   var dayData = await _store
       .collection('ehoncount')
-      .where('ehon_year', isEqualTo: year)
-      .where('ehon_month', isEqualTo: month)
-      .where('ehon_day', isEqualTo: day)
+      .where('ehon_year', isEqualTo: year.toString())
+      .where('ehon_month', isEqualTo: month.toString())
+      .where('ehon_date', isEqualTo: day.toString())
       .get();
   var countDay = dayData.docs.length;
   return countDay;

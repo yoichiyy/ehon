@@ -8,11 +8,16 @@ class EditTaskModel extends ChangeNotifier {
   final Todo todo;
   EditTaskModel(this.todo) {
     dateTimeController.text = todo.taskName;
-    authorController.text = todo.timestamp!.toDate().month.toString();
+    dueDateController.text = todo.timestamp!.toDate().month.toString();
+  }
+
+  void updateTimestamp(DateTime dateTime) {
+    todo.timestamp = Timestamp.fromDate(dateTime);
+    notifyListeners();
   }
 
   final dateTimeController = TextEditingController();
-  final authorController = TextEditingController();
+  final dueDateController = TextEditingController();
 
   String? taskName;
   String? timestamp;
@@ -33,7 +38,7 @@ class EditTaskModel extends ChangeNotifier {
 
   Future update() async {
     taskName = dateTimeController.text;
-    timestamp = authorController.text;
+    timestamp = dueDateController.text;
 
     // firestoreに追加
     await FirebaseFirestore.instance
