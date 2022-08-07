@@ -15,7 +15,7 @@ Future<int> getCounterForMonth(int year, int month) async {
   final ehonCountStream = _store.collection('ehoncount').snapshots();
   ehonCountStream.listen((qs) {
     //変更があったら、listen以下がはしる。
-    print("おはよう");
+    // print("おはよう");
   });
 
   //すべての絵本データのカウント：FQ：ehonDataの正体？ getで得たものはなにか？→snapshotを得たとある。snapshotとは？

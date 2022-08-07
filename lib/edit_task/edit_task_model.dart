@@ -28,7 +28,7 @@ class EditTaskModel extends ChangeNotifier {
   }
 
   void setDueDate(String dueDate) {
-    this.timestamp = timestamp;
+    this.timestamp = dueDate;
     notifyListeners();
   }
 
@@ -38,7 +38,6 @@ class EditTaskModel extends ChangeNotifier {
 
   Future update() async {
     taskName = dateTimeController.text;
-    timestamp = dueDateController.text;
 
     // firestoreに追加
     await FirebaseFirestore.instance

@@ -30,27 +30,28 @@ class EditTaskPage extends StatelessWidget {
                   //datetimepicker　はりつけ
                   TextButton(
                     onPressed: () {
-                      DatePicker.showDatePicker(context,
+                      DatePicker.showDateTimePicker(context,
                           showTitleActions: true,
                           minTime: DateTime(2022, 3, 5),
                           maxTime: DateTime(2025, 6, 7), onChanged: (date) {
                         debugPrint('change $date');
                       }, onConfirm: (date) {
                         model.updateTimestamp(date);
+                        model.setDueDate(date.toString());
                         //timestampのタイプを変更検討
                         //viewとmodel　更新系＝モデルでやるべし。notifilistenersたたけないから。
-                        
 
                         debugPrint('confirm $date');
                       }, currentTime: DateTime.now(), locale: LocaleType.jp);
                     },
                     child: const Text(
-                      'DATETIME PICKER',
+                      '日付・時間の変更',
                       style: TextStyle(color: Colors.blue),
                     ),
                   ),
                   // Text("${model.dateTimeController}"),
-                  Text("${model.todo.timestamp!.toDate()}"),
+                  Text(
+                      "${model.todo.timestamp!.toDate().month}/${model.todo.timestamp!.toDate().day}  ${model.todo.timestamp!.toDate().hour}時"),
 
                   // controller: model.dateTimeController,
                   // onChanged: (text) {
@@ -58,25 +59,30 @@ class EditTaskPage extends StatelessWidget {
                   const SizedBox(
                     height: 8,
                   ),
+
                   TextField(
                     controller: model.dateTimeController,
                     decoration: const InputDecoration(
                       hintText: '日付',
                     ),
                     onChanged: (text) {
-                      model.setDueDate(text);
+                      model.setTaskName(text);
                     },
                   ),
+
                   const SizedBox(
                     height: 16,
                   ),
+
                   ElevatedButton(
                     onPressed: model.isUpdated()
                         ? () async {
                             // 追加の処理
                             try {
                               await model.update();
+                              //FQ：popの引数は、「遷移先ページに、タスク名更新したからこれを使ってね。」でOKか？
                               Navigator.of(context).pop(model.taskName);
+                              debugPrint("タスク編集しています");
                             } catch (e) {
                               final snackBar = SnackBar(
                                 backgroundColor: Colors.red,
@@ -87,7 +93,7 @@ class EditTaskPage extends StatelessWidget {
                             }
                           }
                         : null,
-                    child: const Text('更新する'),
+                    child: const Text('更新'),
                   ),
                 ],
               ),
