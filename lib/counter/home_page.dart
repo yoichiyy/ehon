@@ -1,13 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:counter/homeCard.dart';
-import 'package:counter/main.dart';
+import 'package:counter/counter/homeCard.dart';
 import 'package:counter/models/database_provider.dart';
-import 'package:counter/navigation.dart';
-import 'package:counter/history_page.dart';
-import 'package:counter/%E5%89%8A%E9%99%A4OK/%E3%83%BB%E3%83%BB%E3%83%BBtask_list_page.dart';
 import 'package:counter/ui/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'models/counter_model.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -42,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
             flex: 2,
             child: HomeCardWidget(
               title: "えほん",
-              color: Colors.red.withOpacity(0.2),
+              color: Colors.white60,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -54,12 +49,14 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
           ),
-          Expanded(
+          const Expanded(
             flex: 3,
             child: HomeCardWidget(
               title: "TODO",
-              color: Colors.blue.withOpacity(0.2),
-              child: const TaskCard(),
+              color: Colors.white12,
+              // color: Colors.amber[100], //これならうまくいかぬのはなぜ？FQ：
+              // ここにあるのに→　https://api.flutter.dev/flutter/material/Colors-class.html
+              child: TaskCard(),
             ),
           ),
         ],
@@ -220,11 +217,11 @@ class _TaskCardState extends State<TaskCard> {
 
                         setState(() {});
                       },
-                      child: Text("日付指定"),
+                      child: const Text("日付指定"),
                     ),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   width: double.infinity,
                   height: 10,
                 ),
@@ -320,7 +317,7 @@ class _TaskCardState extends State<TaskCard> {
 
         //これも、上のexpandedの中にどうして入れることができないか？
         MaterialButton(
-          color: Colors.green,
+          color: Colors.lightBlue.shade900,
           onPressed: () async {
             if (_controller.text.isEmpty) {
               showDialog(
@@ -351,7 +348,14 @@ class _TaskCardState extends State<TaskCard> {
             });
             debugPrint("登録しました");
           },
-          child: const Text("登録"),
+          child: const Text(
+            "登録",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ],
     );

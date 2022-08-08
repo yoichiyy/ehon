@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:provider/provider.dart';
 
-import '../funiv_main_model.dart';
-import '../todo.dart';
+import '../task_list/funiv_main_model.dart';
+import '../task_list/todo.dart';
 import 'edit_task_model.dart';
 
 class EditTaskPage extends StatelessWidget {

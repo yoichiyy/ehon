@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'edit_task/edit_task.dart';
+import '../edit_task/edit_task.dart';
 import 'funiv_main_model.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';

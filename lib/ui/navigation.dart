@@ -1,4 +1,4 @@
-import 'package:counter/history_page.dart';
+import 'package:counter/counter/history_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 

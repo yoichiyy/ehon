@@ -14,6 +14,11 @@ class HomeCardWidget extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
+        shape: const RoundedRectangleBorder(
+          side: BorderSide(
+            color: Colors.black,
+          ),
+        ),
         color: color,
         child: Padding(
           padding: const EdgeInsets.all(8.0),

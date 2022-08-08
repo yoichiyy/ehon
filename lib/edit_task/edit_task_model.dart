@@ -2,7 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../todo.dart';
+import '../task_list/todo.dart';
 
 class EditTaskModel extends ChangeNotifier {
   final Todo todo;
