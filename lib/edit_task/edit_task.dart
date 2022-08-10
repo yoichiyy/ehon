@@ -10,7 +10,7 @@ import '../task_list/todo.dart';
 import 'edit_task_model.dart';
 
 class EditTaskPage extends StatelessWidget {
-  final Todo todo;
+  final TodoForView todo;
   EditTaskPage(this.todo);
 
   @override

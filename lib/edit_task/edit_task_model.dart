@@ -5,14 +5,21 @@ import 'package:flutter/material.dart';
 import '../task_list/todo.dart';
 
 class EditTaskModel extends ChangeNotifier {
-  final Todo todo;
+  final TodoForView todo;
   EditTaskModel(this.todo) {
     dateTimeController.text = todo.taskName;
     dueDateController.text = todo.timestamp!.toDate().month.toString();
   }
 
+//こっちが、edit画面の更新表示用
   void updateTimestamp(DateTime dateTime) {
     todo.timestamp = Timestamp.fromDate(dateTime);
+    notifyListeners();
+  }
+
+//stringをもらって、そのままtimestampというStringが更新される
+  void setDueDate(String dueDate) {
+    timestamp = dueDate;
     notifyListeners();
   }
 
@@ -24,11 +31,6 @@ class EditTaskModel extends ChangeNotifier {
 
   void setTaskName(String taskName) {
     this.taskName = taskName;
-    notifyListeners();
-  }
-
-  void setDueDate(String dueDate) {
-    this.timestamp = dueDate;
     notifyListeners();
   }
 
