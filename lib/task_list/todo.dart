@@ -5,7 +5,7 @@ class TodoForView {
   String dueDate = "";
   String dueTime = "";
   String id = "";
-  Timestamp? timestamp;
+  Timestamp? createdAtForRead;
   //https://flutter.ctrnost.com/basic/interactive/form/datapicker/
 
   //コンストラクタ
@@ -16,7 +16,8 @@ class TodoForView {
 //F質問：このtimestampそのものを、編集することはできないのか？もしだめなら、
 //1.timestampでなくて、年月日時でfirebase側も管理する。タスク登録時点で、この４つを送信する。
 //2.edit画面のコントローラーを工夫？して、timestampを表示/編集できるcontrollerにする。
-    timestamp = (documentSnapshot.data() as Map<String, dynamic>)['createdAt'];
+    createdAtForRead =
+        (documentSnapshot.data() as Map<String, dynamic>)['createdAt'];
     id = documentSnapshot.id;
   }
 }

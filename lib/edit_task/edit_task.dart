@@ -33,15 +33,15 @@ class EditTaskPage extends StatelessWidget {
                       DatePicker.showDateTimePicker(context,
                           showTitleActions: true,
                           minTime: DateTime(2022, 3, 5),
-                          maxTime: DateTime(2025, 6, 7), onChanged: (date) {
+                          maxTime: DateTime(2025, 6,
+                              7), //FQ：どうしてかってに、フォーマットで、改行が取れてしまうのだろう？それが正しいのか？
+                          onChanged: (date) {
                         debugPrint('change $date');
-                      }, onConfirm: (date) {
-                        model.updateTimestamp(date);
-                        model.setDueDate(date.toString());
-                        //timestampのタイプを変更検討
+                      }, //ここもです。
+                          onConfirm: (dateSelected) {
+                        model.updateForFirebase(dateSelected);
+                        // model.updateDueDateText(dateSelected.toString());
                         //viewとmodel　更新系＝モデルでやるべし。notifilistenersたたけないから。
-
-                        debugPrint('confirm $date');
                       }, currentTime: DateTime.now(), locale: LocaleType.jp);
                     },
                     child: const Text(
@@ -49,19 +49,14 @@ class EditTaskPage extends StatelessWidget {
                       style: TextStyle(color: Colors.blue),
                     ),
                   ),
-                  // Text("${model.dateTimeController}"),
                   Text(
-                      "${model.todo.timestamp!.toDate().month}/${model.todo.timestamp!.toDate().day}  ${model.todo.timestamp!.toDate().hour}時"),
-
-                  // controller: model.dateTimeController,
-                  // onChanged: (text) {
-                  //   model.setTaskName(text);
+                      "${model.createdAtForDisplay.toDate().month}/${model.createdAtForDisplay.toDate().day}  ${model.createdAtForDisplay.toDate().hour}時"),
                   const SizedBox(
                     height: 8,
                   ),
 
                   TextField(
-                    controller: model.dateTimeController,
+                    controller: model.taskNameController,
                     decoration: const InputDecoration(
                       hintText: '日付',
                     ),

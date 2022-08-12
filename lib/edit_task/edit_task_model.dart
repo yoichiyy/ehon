@@ -6,28 +6,27 @@ import '../task_list/todo.dart';
 
 class EditTaskModel extends ChangeNotifier {
   final TodoForView todo;
+  final taskNameController = TextEditingController();
+
+  String? taskName;
+  Timestamp createdAtForDisplay = Timestamp.fromDate(DateTime.now());
+  // String? timestampString;
+
   EditTaskModel(this.todo) {
-    dateTimeController.text = todo.taskName;
-    dueDateController.text = todo.timestamp!.toDate().month.toString();
+    taskNameController.text = todo.taskName;
   }
 
 //こっちが、edit画面の更新表示用
-  void updateTimestamp(DateTime dateTime) {
-    todo.timestamp = Timestamp.fromDate(dateTime);
+  void updateForFirebase(DateTime dateSelected) {
+    createdAtForDisplay = Timestamp.fromDate(dateSelected);
     notifyListeners();
   }
 
 //stringをもらって、そのままtimestampというStringが更新される
-  void setDueDate(String dueDate) {
-    timestamp = dueDate;
-    notifyListeners();
-  }
-
-  final dateTimeController = TextEditingController();
-  final dueDateController = TextEditingController();
-
-  String? taskName;
-  String? timestamp;
+  // void updateDueDateText(String stringDateSelected) {
+  //   timestampString = stringDateSelected;
+  //   notifyListeners();
+  // }
 
   void setTaskName(String taskName) {
     this.taskName = taskName;
@@ -35,19 +34,17 @@ class EditTaskModel extends ChangeNotifier {
   }
 
   bool isUpdated() {
-    return taskName != null || timestamp != null;
+    return taskName != null || createdAtForDisplay != null;
   }
 
   Future update() async {
-    taskName = dateTimeController.text;
-
-    // firestoreに追加
+    taskName = taskNameController.text;
     await FirebaseFirestore.instance
         .collection('todoList')
         .doc(todo.id)
         .update({
       'title': taskName,
-      'createdAt': timestamp,
+      'createdAt': createdAtForDisplay,
     });
   }
 }
