@@ -1,23 +1,44 @@
-// import 'package:hive/hive.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'todo_class.dart';
 
-// part '../models/task_model.g.dart';
+class MainModel extends ChangeNotifier {
+  List<Todo> todos = []; //日本語訳？：「リストです。Todoクラスで定義した３つの変数を使います。」
 
+  void getTodoListRealtime() {
+    final querySnapshots =
+        FirebaseFirestore.instance.collection('todoList').snapshots();
 
-// // To generate new files, run:
-// // ` flutter pub run build_runner build --delete-conflicting-outputs`
-// @HiveType(typeId: 1)
-// class TaskModel extends HiveObject {
-//   TaskModel({required this.id, required this.title, required this.date});
+    //↑は、collectionをまるっと。↓は、データ４つ、かな？
+    //F質問：querySnapshotsはコレクション全体で、下のqueryDocumentSnapshotsも、docs、と書いてあるので、同じくデータ４つのように見える。
+    querySnapshots.listen((querySnapshot) {
+      //future型の"いとこ"→stream型。listenで、
+      final queryDocumentSnapshots = querySnapshot.docs; //コレクション内のドキュメント全部
 
-//   @HiveField(0)
-//   String id;
+      //Todoクラスのコンストラクタに、idも追加した。これでTodo(doc)をリスト変換したtodoListには、idという変数もできました。
+      final todoList = queryDocumentSnapshots.map((doc) => Todo(doc)).toList();
 
-//   @HiveField(1)
-//   String title;
+      //並べ替えて、最後にリストをtodoListというリストの箱に詰め替えてる
+      todoList.sort((a, b) => b.dueDate.compareTo(a.dueDate));
+      todos = todoList;
 
-//   @HiveField(2)
-//   DateTime date;
+      notifyListeners();
+    });
+  }
+}
 
-//   @override
-//   String toString() => "$id - ${title}";
-// }
+class AddBookModel extends ChangeNotifier {
+  String? taskName;
+  String? dueDate;
+
+  Future addBook() async {
+    if (taskName == null || taskName == "") {
+      throw 'タスク名が入力されていません';
+    }
+    // firestoreに追加
+    await FirebaseFirestore.instance.collection('books').add({
+      'title': taskName,
+      'author': dueDate,
+    });
+  }
+}

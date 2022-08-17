@@ -1,50 +1,38 @@
-// import 'package:book_list_sample/domain/book.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-
-import '../task_list/todo.dart';
+import '../task_list/todo_class.dart';
 
 class EditTaskModel extends ChangeNotifier {
-  final TodoForView todo;
+  final Todo todo;
   final taskNameController = TextEditingController();
-
-  String? taskName;
-  Timestamp createdAtForDisplay = Timestamp.fromDate(DateTime.now());
-  // String? timestampString;
+  String? taskNameForEditpage;
 
   EditTaskModel(this.todo) {
-    taskNameController.text = todo.taskName;
+    taskNameController.text = todo.taskNameOfTodoClass;
   }
 
-//こっちが、edit画面の更新表示用
   void updateForFirebase(DateTime dateSelected) {
-    createdAtForDisplay = Timestamp.fromDate(dateSelected);
+    todo.createdAt = dateSelected;
     notifyListeners();
   }
 
-//stringをもらって、そのままtimestampというStringが更新される
-  // void updateDueDateText(String stringDateSelected) {
-  //   timestampString = stringDateSelected;
-  //   notifyListeners();
-  // }
-
   void setTaskName(String taskName) {
-    this.taskName = taskName;
+    taskNameForEditpage = taskName;
     notifyListeners();
   }
 
   bool isUpdated() {
-    return taskName != null || createdAtForDisplay != null;
+    return taskNameForEditpage != null || todo.createdAt != null;
   }
 
   Future update() async {
-    taskName = taskNameController.text;
+    taskNameForEditpage = taskNameController.text;
     await FirebaseFirestore.instance
         .collection('todoList')
         .doc(todo.id)
         .update({
-      'title': taskName,
-      'createdAt': createdAtForDisplay,
+      'title': taskNameForEditpage,
+      'createdAt': todo.createdAt,
     });
   }
 }

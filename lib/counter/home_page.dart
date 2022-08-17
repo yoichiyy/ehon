@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:counter/counter/counter_model.dart';
 import 'package:counter/counter/homeCard.dart';
 import 'package:counter/models/database_provider.dart';
 import 'package:counter/ui/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -12,19 +14,14 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  //consumer statefulninatteirunoで、再度取得するコードかくでもOK
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
-  // final _controller = TextEditingController();
-  // int countToday = 0;
-  // void _incrementCounter() async {
-  //   await addCounter(DateTime.now());
-  //   setState(() {
-  //     countToday++;
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
+    // return ChangeNotifierProvider<CounterModel>(
+    //   create: (_) => CounterModel(_),
+    //   child: Scaffold(
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -43,7 +40,33 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   _countArea(),
                   Center(
-                    child: _buttonArea(),
+                    //Button_area
+                    child: SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: FloatingActionButton(
+                        onPressed: () async {
+                          await FirebaseFirestore.instance
+                              .collection('ehoncount')
+                              .doc() // ドキュメントID自動生成
+                              .set({
+                            'ehon_year': "${DateTime.now().year}",
+                            'ehon_month': "${DateTime.now().month}",
+                            'ehon_date': "${DateTime.now().day}",
+                            'ehon_pm': "plus"
+                          });
+
+                          // setState(() {
+                          //   getCounterForDay(DateTime.now().year,
+                          //       DateTime.now().month, DateTime.now().day);
+                          //   getCounterForMonth(
+                          //       DateTime.now().year, DateTime.now().month);
+                          //   getCounterForAll();
+                          // });
+                        },
+                        child: const Icon(Icons.add),
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -62,6 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       ),
       bottomNavigationBar: const BottomBar(currentIndex: 1),
+      // ),
     );
   }
 
@@ -81,24 +105,19 @@ class _MyHomePageState extends State<MyHomePage> {
                       padding: const EdgeInsets.only(top: 8.0),
                       child: Text(
                         "今日: ${snapshot.data}",
-                        // "Today: ${snapshot.data?.bookTitles?.join(", ") ?? "No book data"}",
                         textAlign: TextAlign.center,
                         style: const TextStyle(fontSize: 22),
                       ),
                     );
                   }),
-              // const Text("Total Today"),
             ),
           ),
           Expanded(
             child: Container(
               margin: const EdgeInsets.all(4),
               child: FutureBuilder<int>(
-                // future: getCounterForDay(DateTime.now()),
                 future: getCounterForMonth(
-                    //ここで、DEBUGしても、yearとmonthは確認できないんだろうか。FQ：
-                    DateTime.now().year,
-                    DateTime.now().month),
+                    DateTime.now().year, DateTime.now().month),
                 builder: (context, snapshot) {
                   return Padding(
                     padding: const EdgeInsets.only(top: 8.0),
@@ -134,37 +153,6 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-
-  Widget _buttonArea() {
-    return SizedBox(
-      width: 60,
-      height: 60,
-      child: FloatingActionButton(
-        onPressed: () async {
-          debugPrint("ehonカウント送信 to Fire");
-          await FirebaseFirestore.instance
-              .collection('ehoncount')
-              .doc() // ドキュメントID自動生成
-              .set({
-            'ehon_year': "${DateTime.now().year}",
-            'ehon_month': "${DateTime.now().month}",
-            'ehon_date': "${DateTime.now().day}",
-            'ehon_pm': "plus"
-          });
-          // _incrementCounter(); hive
-        },
-        heroTag: "Increment",
-        tooltip: "Increment",
-        child: const Icon(Icons.add),
-      ),
-    );
-  }
-  // @override
-  // void dispose() {
-  //   // Clean up the controller when the widget is disposed.
-  //   _controller.dispose();
-  //   super.dispose();
-  // }
 }
 
 class TaskCard extends StatefulWidget {
@@ -176,7 +164,18 @@ class TaskCard extends StatefulWidget {
 
 class _TaskCardState extends State<TaskCard> {
   final TextEditingController _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose(); //このsuperはなんでしょう。FQ：
+    // flutter stateful dispose
+  }
+
   DateTime _pickedDate = DateTime.now();
+  final snackBar = const SnackBar(
+    content: Text('登録しました'),
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -321,7 +320,7 @@ class _TaskCardState extends State<TaskCard> {
           onPressed: () async {
             if (_controller.text.isEmpty) {
               showDialog(
-                context: context,
+                context: context, //FQ：contextは何の情報を渡している？一度デバッグで見られるかな？
                 builder: (context) {
                   return AlertDialog(
                     title: const Text("Oops"),
@@ -347,6 +346,8 @@ class _TaskCardState extends State<TaskCard> {
               'createdAt': _pickedDate //本当はタイムスタンプ　「サーバー　タイムスタンプ」検索
             });
             debugPrint("登録しました");
+            _controller.clear();
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           },
           child: const Text(
             "登録",
