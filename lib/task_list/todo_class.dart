@@ -15,7 +15,7 @@ class Todo {
     //キャスト。解釈するため。前半：fireのdoc.
     //変数名から型がわかるように（複数、単数を参考に）
 
-    //りんとlint：せいてきかいせきをどのくらいつよくするか
+    //lint：静的解析をどのくらい強くするか
     taskNameOfTodoClass = data["title"] as String;
 
 //F質問：このtimestampそのものを、編集することはできないのか？もしだめなら、
