@@ -12,14 +12,12 @@ class TaskListPage extends StatefulWidget {
 
   // final Todo todo;
   // const EditTaskPage(this.todo, {Key? key}) : super(key: key);
-  
 
   @override
   State<TaskListPage> createState() => _TaskListPageState();
 }
 
 class _TaskListPageState extends State<TaskListPage> {
-  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -48,7 +46,8 @@ class _TaskListPageState extends State<TaskListPage> {
                         onTap: () async {
                           //ここでString title = ...とやっていることが理解できぬ。この
                           //title変数を、次のeditTaskページに渡しているようにも見えない。
-                          final String? title = await Navigator.push(
+                          // final String? title =
+                          await Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => EditTaskPage(todo),
@@ -57,7 +56,8 @@ class _TaskListPageState extends State<TaskListPage> {
                         },
                         child: ListTile(
                           title: Text(
-                              '${todo.taskNameOfTodoClass}　${model.todo.createdAt?.month}/${model.todo.createdAt?.day}  ${model.todo.createdAt?.hour}時'),
+                              '${todo.taskNameOfTodoClass}　${todo.createdAt?.month}/${todo.createdAt?.day}  ${todo.createdAt?.hour}時'),
+                          // ${model.todo.createdAt?.month}/${model.todo.createdAt?.day}  ${model.todo.createdAt?.hour}時'),
                         ),
                       ),
                       background: Container(color: Colors.red),

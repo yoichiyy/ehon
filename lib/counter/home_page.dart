@@ -56,13 +56,13 @@ class _MyHomePageState extends State<MyHomePage> {
                             'ehon_pm': "plus"
                           });
 
-                          // setState(() {
-                          //   getCounterForDay(DateTime.now().year,
-                          //       DateTime.now().month, DateTime.now().day);
-                          //   getCounterForMonth(
-                          //       DateTime.now().year, DateTime.now().month);
-                          //   getCounterForAll();
-                          // });
+                          setState(() {
+                            getCounterForDay(DateTime.now().year,
+                                DateTime.now().month, DateTime.now().day);
+                            getCounterForMonth(
+                                DateTime.now().year, DateTime.now().month);
+                            getCounterForAll();
+                          });
                         },
                         child: const Icon(Icons.add),
                       ),

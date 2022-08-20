@@ -19,7 +19,7 @@ class MainModel extends ChangeNotifier {
       final todoList = queryDocumentSnapshots.map((doc) => Todo(doc)).toList();
 
       //並べ替えて、最後にリストをtodoListというリストの箱に詰め替えてる
-      todoList.sort((a, b) => b.dueDate.compareTo(a.dueDate));
+      todoList.sort((a, b) => a.createdAt!.compareTo(b.createdAt!));
       todos = todoList;
 
       notifyListeners();
