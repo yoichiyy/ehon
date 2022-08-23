@@ -23,6 +23,12 @@ Future<int> getCounterForMonth(int year, int month) async {
   //https://flutter.ctrnost.com/basic/interactive/form/datapicker/
 }
 
+//1.端末に保存.１回は取得する必要はある。日付KEY→valueローカルストレージ。もしも見つからなければデータ取りに行くというコード。
+//2.firesotore→cloudfunctionで集計できる。書き込んだタイミング→→全日付データのdoc KEY日付　VALUE冊数。新しいコレクション
+//oncleate　トリガー。来たら、それが作られるようなのつくる。「valueを１増やして」・・・functionを一つかまさないと成らぬ。難易度高い。
+
+
+
 // 日の冊数カウント
 Future<int> getCounterForDay(int year, int month, int day) async {
   final _store = FirebaseFirestore.instance;
@@ -44,7 +50,6 @@ Future<int> getCounterForAll() async {
   return countAll;
 }
 
-
 String getIdFromDate(DateTime date) {
   return "${date.day}-${date.month}-${date.year}";
 }
@@ -54,7 +59,6 @@ DateTime getDateFromId(String id) {
   return DateTime(int.parse(getListOfNumbers[0]),
       int.parse(getListOfNumbers[1]), int.parse(getListOfNumbers[2]));
 }
-
 
 //作り直し。ifを外す
 Future<void> addBook(DateTime dueDate, String taskName) async {
@@ -68,4 +72,3 @@ Future<void> addBook(DateTime dueDate, String taskName) async {
     'author': dueDate,
   });
 }
-

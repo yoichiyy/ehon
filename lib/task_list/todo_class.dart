@@ -5,7 +5,6 @@ class Todo {
   String dueDate = "";
   String dueTime = "";
   String id = "";
-  // Timestamp? createdAtForRead;
   DateTime? createdAt;
   //https://flutter.ctrnost.com/basic/interactive/form/datapicker/
 
@@ -20,10 +19,6 @@ class Todo {
     //lint：静的解析をどのくらい強くするか
     taskNameOfTodoClass = data["title"] as String;
 
-//F質問：このtimestampそのものを、編集することはできないのか？もしだめなら、
-//1.timestampでなくて、年月日時でfirebase側も管理する。タスク登録時点で、この４つを送信する。
-//2.edit画面のコントローラーを工夫？して、timestampを表示/編集できるcontrollerにする。
-    // createdAtForRead = data['createdAt'] as Timestamp?;
     createdAt =
         (data['createdAt'] as Timestamp?)?.toDate(); //null aware operator
     id = documentSnapshot.id;

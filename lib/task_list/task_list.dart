@@ -25,23 +25,23 @@ class _TaskListPageState extends State<TaskListPage> {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: ChangeNotifierProvider<MainModel>(
-        create: (_) => MainModel()..getTodoListRealtime(),
+      home: ChangeNotifierProvider<TaskModel>(
+        create: (_) => TaskModel()..getTodoListRealtime(),
         child: Scaffold(
             bottomNavigationBar: BottomBar(currentIndex: 0),
             appBar: AppBar(
               title: Text('やること'),
             ),
-            body: Consumer<MainModel>(
+            body: Consumer<TaskModel>(
               builder: (context, model, child) {
-                final todos = model.todos;
+                final todoList = model.todoListFromModel;
 
                 return ListView.builder(
-                  itemCount: todos.length,
+                  itemCount: todoList.length,
                   itemBuilder: (BuildContext context, int index) {
-                    final todo = todos[index];
+                    final todoIndex = todoList[index];
                     return Dismissible(
-                      key: ValueKey(todo),
+                      key: ValueKey(todoIndex),
                       child: InkWell(
                         onTap: () async {
                           //ここでString title = ...とやっていることが理解できぬ。この
@@ -50,13 +50,13 @@ class _TaskListPageState extends State<TaskListPage> {
                           await Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => EditTaskPage(todo),
+                              builder: (context) => EditTaskPage(todoIndex),
                             ),
                           );
                         },
                         child: ListTile(
                           title: Text(
-                              '${todo.taskNameOfTodoClass}　${todo.createdAt?.month}/${todo.createdAt?.day}  ${todo.createdAt?.hour}時'),
+                              '${todoIndex.taskNameOfTodoClass}　${todoIndex.createdAt?.month}/${todoIndex.createdAt?.day}  ${todoIndex.createdAt?.hour}時'),
                           // ${model.todo.createdAt?.month}/${model.todo.createdAt?.day}  ${model.todo.createdAt?.hour}時'),
                         ),
                       ),
@@ -65,10 +65,10 @@ class _TaskListPageState extends State<TaskListPage> {
                         setState(
                           () {
                             //removeAtと、Firebaseのdelete両方をやる必要あるのかな？後者だけで良い感じも。→試してみる。
-                            todos.removeAt(index);
+                            todoList.removeAt(index);
                             FirebaseFirestore.instance
                                 .collection('todoList')
-                                .doc(todo.id)
+                                .doc(todoIndex.id)
                                 .delete(); //そもそもこれは、doc.idがないので、おそらく動かぬ。
                           },
                         );

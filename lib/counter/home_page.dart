@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:counter/counter/counter_model.dart';
 import 'package:counter/counter/homeCard.dart';
-import 'package:counter/models/database_provider.dart';
+import 'package:counter/counter/count_model.dart';
 import 'package:counter/ui/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
