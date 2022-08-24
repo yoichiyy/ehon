@@ -15,7 +15,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   //consumer statefulninatteirunoで、再度取得するコードかくでもOK
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-
+  final historyCount =
+      "${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}";
   @override
   Widget build(BuildContext context) {
     // return ChangeNotifierProvider<CounterModel>(
@@ -54,7 +55,33 @@ class _MyHomePageState extends State<MyHomePage> {
                             'ehon_date': "${DateTime.now().day}",
                             'ehon_pm': "plus"
                           });
-
+                          //1
+                          final todayData = FirebaseFirestore.instance
+                              .collection('historyCounter')
+                              .doc(historyCount)
+                              .get()
+                              .then(
+                                (docSnapshot) => {
+                                  if (docSnapshot.exists)
+                                    {
+                                      FirebaseFirestore.instance
+                                          .collection('historyCounter')
+                                          .doc(historyCount)
+                                          .update({
+                                        "count": FieldValue.increment(1.0)
+                                      })
+                                    }
+                                  else
+                                    {
+                                      FirebaseFirestore.instance
+                                          .collection('historyCounter')
+                                          .doc(historyCount)
+                                          .set(
+                                        {"count": 1},
+                                      ),
+                                    },
+                                },
+                              );
                           setState(() {
                             getCounterForDay(DateTime.now().year,
                                 DateTime.now().month, DateTime.now().day);
