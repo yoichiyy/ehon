@@ -3,7 +3,6 @@ import 'package:counter/counter/homeCard.dart';
 import 'package:counter/counter/count_model.dart';
 import 'package:counter/ui/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
@@ -17,6 +16,7 @@ class _MyHomePageState extends State<MyHomePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final historyCount =
       "${DateTime.now().year}${DateTime.now().month}${DateTime.now().day}";
+
   @override
   Widget build(BuildContext context) {
     // return ChangeNotifierProvider<CounterModel>(
@@ -56,7 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             'ehon_pm': "plus"
                           });
                           //1
-                          final todayData = FirebaseFirestore.instance
+                          FirebaseFirestore.instance
                               .collection('historyCounter')
                               .doc(historyCount)
                               .get()
@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                           .collection('historyCounter')
                                           .doc(historyCount)
                                           .update({
-                                        "count": FieldValue.increment(1.0)
+                                        "count": FieldValue.increment(1)
                                       })
                                     }
                                   else
@@ -77,7 +77,11 @@ class _MyHomePageState extends State<MyHomePage> {
                                           .collection('historyCounter')
                                           .doc(historyCount)
                                           .set(
-                                        {"count": 1},
+                                        {
+                                          "date":
+                                              "${DateTime.now().month}/${DateTime.now().day}(${DateTime.now().weekday})",
+                                          "count": 1,
+                                        },
                                       ),
                                     },
                                 },

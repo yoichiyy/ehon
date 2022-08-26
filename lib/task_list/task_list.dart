@@ -10,9 +10,6 @@ import 'package:counter/ui/bottom_navigation_bar.dart';
 class TaskListPage extends StatefulWidget {
   const TaskListPage({Key? key}) : super(key: key);
 
-  // final Todo todo;
-  // const EditTaskPage(this.todo, {Key? key}) : super(key: key);
-
   @override
   State<TaskListPage> createState() => _TaskListPageState();
 }
@@ -54,10 +51,12 @@ class _TaskListPageState extends State<TaskListPage> {
                             ),
                           );
                         },
-                        child: ListTile(
-                          title: Text(
-                              '${todoIndex.taskNameOfTodoClass}　${todoIndex.createdAt?.month}/${todoIndex.createdAt?.day}  ${todoIndex.createdAt?.hour}時'),
-                          // ${model.todo.createdAt?.month}/${model.todo.createdAt?.day}  ${model.todo.createdAt?.hour}時'),
+                        child: Card(
+                          child: ListTile(
+                            title: Text(
+                                '${todoIndex.taskNameOfTodoClass}　${todoIndex.createdAt?.month}/${todoIndex.createdAt?.day}  ${todoIndex.createdAt?.hour}時'),
+                            // ${model.todo.createdAt?.month}/${model.todo.createdAt?.day}  ${model.todo.createdAt?.hour}時'),
+                          ),
                         ),
                       ),
                       background: Container(color: Colors.red),
