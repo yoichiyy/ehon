@@ -4,6 +4,8 @@ import 'package:counter/counter/count_model.dart';
 import 'package:counter/ui/bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
+import '../utils/date_time.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
@@ -79,7 +81,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                           .set(
                                         {
                                           "date":
-                                              "${DateTime.now().month}/${DateTime.now().day}(${DateTime.now().weekday})",
+                                              "${DateTime.now().month}/${DateTime.now().day}(${DateTime.now().japaneseWeekday})",
+                                          //0-6の数字を返す。0=月... →リストを作れば良い。アプリ中でどこからでも使えるように。utils
+                                          //firebaseに、整数で入ってても、読み込むview側で、このjapaneseWeekday関数を使えば曜日表示可能。
                                           "count": 1,
                                         },
                                       ),

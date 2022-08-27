@@ -23,7 +23,13 @@ class _TaskListPageState extends State<TaskListPage> {
         primarySwatch: Colors.blue,
       ),
       home: ChangeNotifierProvider<TaskModel>(
-        create: (_) => TaskModel()..getTodoListRealtime(),
+        // create: (_) => TaskModel()..getTodoListRealtime(),
+        //インスタンス化した後に、コレに対して、メソッドをコールする。
+        create: (_) {
+          final taskModel = TaskModel(); //インスタンス化して
+          taskModel.getTodoListRealtime(); //したものを、メソッドよんで、
+          return taskModel;//かえす。（createなので）
+        },
         child: Scaffold(
             bottomNavigationBar: BottomBar(currentIndex: 0),
             appBar: AppBar(
