@@ -18,7 +18,7 @@ class _TaskListPageState extends State<TaskListPage> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ehon',
+      title: '絵本COUNTER_WEB版',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -28,7 +28,7 @@ class _TaskListPageState extends State<TaskListPage> {
         create: (_) {
           final taskModel = TaskModel(); //インスタンス化して
           taskModel.getTodoListRealtime(); //したものを、メソッドよんで、
-          return taskModel;//かえす。（createなので）
+          return taskModel; //かえす。（createなので）
         },
         child: Scaffold(
             bottomNavigationBar: BottomBar(currentIndex: 0),

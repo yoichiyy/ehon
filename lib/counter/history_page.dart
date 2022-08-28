@@ -47,6 +47,7 @@ class HistoryModel extends ChangeNotifier {
     final docs =
         await FirebaseFirestore.instance.collection('historyCounter').get();
     final readingHistory = docs.docs.map((doc) => History(doc)).toList();
+    readingHistory.sort((a, b) => b.date.compareTo(a.date));
     historyList = readingHistory;
     notifyListeners();
   }
